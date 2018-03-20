@@ -3,8 +3,10 @@ from django.db import models
 # Create your models here.
 
 class Host(models.Model):
-    name = models.CharField(max_length=64, unique=True)
-    ip_addr = models.GenericIPAddressField(u'IP地址',unique=True)
+    name = models.CharField(u'名称', max_length=64, unique=True)
+    ip_addr = models.GenericIPAddressField(u'IP地址', unique=True)
+    host_groups = models.ManyToManyField('HostGroup', blank=True)
+    templates = models.ManyToManyField('Template', blank=True)
     monitored_by_choices = (
         ('agent', 'Agent'),
         ('snmp', 'SNMP'),
@@ -24,3 +26,45 @@ class Host(models.Model):
 
     def __str__(self):
         return self.name
+
+class HostGroup(models.Model):
+    name = models.CharField(u'名称', max_length=64, unique=True)
+    templates = models.ManyToManyField('Template', blank=True)
+    memo = models.TextField(u'备注', blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Service(models.Model):
+    name = models.CharField(u'服务名称', max_length=64, unique=True)
+    interval = models.IntegerField(u'监控间隔', default=60)
+    plugin_name = models.CharField(u'插件名', max_length=64, default='n/a')
+    # items = models.ManyToManyField('ServiceIndex', verbose_name=u'指标列表', blank=True)
+    has_sub_service = models.BooleanField(u'是否有子服务',default=False, help_text=u'如果一个服务还有独立的子服务 ,选择这个,比如 网卡服务有多个独立的子网卡')
+    memo = models.CharField(u'备注', max_length=128, blank=True, null=True)
+
+    def __str__(self):
+        return self.name
+
+class Template(models.Model):
+    name = models.CharField(u'模板名称', max_length=64, unique=True)
+    services = models.ManyToManyField('Service', verbose_name=u'服务列表')
+
+    def __str__(self):
+        return self.name
+
+class ServiceIndex(models.Model):
+    name = models.CharField(max_length=64)
+    key = models.CharField(max_length=64)
+    data_type_choices = (
+        ('int', "int"),
+        ('float', "float"),
+        ('str', "string")
+    )
+    data_type = models.CharField(u'指标数据类型', max_length=32, choices=data_type_choices, default='init')
+    memo = models.CharField(u'备注', max_length=128, blank=True, null=True)
+
+    def __str__(self):
+        return '{}.{}'.format(self.name, self.key)
+
+
