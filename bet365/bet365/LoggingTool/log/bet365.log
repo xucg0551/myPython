@@ -1,0 +1,9 @@
+[Sun, 03 Dec 2017 14:03:54][Logging.py][line:12][DEBUG] This is debug message
+[Sun, 03 Dec 2017 14:05:04][Logging.py][line:13][DEBUG] {"key": 123}
+[Sun, 03 Dec 2017 14:08:15][Logging.py][line:18][INFO] 更新balance, {"key": 123}
+[Sun, 03 Dec 2017 14:12:11][Logging.py][line:18][INFO] 赢了且更新数据库, {"key": 123}
+[Sun, 03 Dec 2017 14:19:07][Logging.py][line:18][INFO] 赢了且更新数据库, {'key': 123}
+[Sun, 03 Dec 2017 14:19:10][Logging.py][line:18][INFO] 赢了且更新数据库, {'key': 123}
+[Sun, 03 Dec 2017 14:19:25][Logging.py][line:18][INFO] 赢了且更新数据库, {'key': 123, 'key2': 234}
+[Sun, 03 Dec 2017 14:24:58][Logging.py][line:18][INFO] 赢了且更新数据库, {'key': 123, 'key3': ['123', '456'], 'key2': 234}
+[Tue, 05 Dec 2017 09:30:23][Logging.py][line:18][INFO] 璧簡涓旀洿鏂版暟鎹簱, {'key2': 234, 'key': 123, 'key3': ['123', '456']}
