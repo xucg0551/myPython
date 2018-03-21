@@ -128,7 +128,9 @@ import http.cookiejar
 #     print('Request completed')
 
 
-
-ddd = urllib.parse.urlparse('http://127.0.0.1:8080/find?key1=val1&key2=val2&key3=val3')
-print(ddd.query)
+#响应
+response = urllib.request.urlopen('https://www.python.org')
+print(response.status)
+print(response.getheaders())
+print(response.getheader('Server'))
 
