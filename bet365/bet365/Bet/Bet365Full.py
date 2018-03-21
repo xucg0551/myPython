@@ -53,7 +53,7 @@ class Bet365Full(Bet365):
                     'parties_name': names,
                     'score': score,
                     'goals_time': [],
-                    'times_betteds': {'5': False},
+                    'times_betteds': {'3': False, '2':False},
                     'full_handicap': handicap,
                     'full_handicap_odds': odds,
                     'play_time': 0.0,
