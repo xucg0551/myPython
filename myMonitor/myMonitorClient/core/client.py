@@ -22,7 +22,7 @@ class ClientHandler(object):
     #请求数据
     def request_data(self, action, url, **datas):
         http_url = 'http://{}:{}/{}'.format(settings.configs['Server'], settings.configs['ServerPort'], url)
-        if action in ('get', 'GET'):
+        if action in ('get', 'GET'): #get请求
             req = request.Request(http_url)
             try:
                 data = request.urlopen(req, timeout=settings.configs['RequestTimeout']).read().decode('utf8')
@@ -33,7 +33,7 @@ class ClientHandler(object):
                 if hasattr(e, 'reason'):
                     print(e.reason)
                 exit("\033[31;1m%s\033[0m" % e)
-        elif action in ('post', 'POST'):
+        elif action in ('post', 'POST'):  #post请求
             pass
 
 

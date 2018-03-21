@@ -22,6 +22,7 @@ class CommandHandler(object):
             self.exit_message()
 
 
+    #启动服务
     def start(self):
         a_client = client.ClientHandler()
         a_client.run_forever()
