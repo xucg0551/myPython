@@ -112,21 +112,20 @@ import http.cookiejar
 # print(response.read().decode('utf-8'))
 
 
-#异常处理
-try:
-    response = urllib.request.urlopen('http://www.baidu.com')
-except urllib.error.URLError as e:
-    if hasattr(e, 'code'):
-        print('code: ', e.code)
-    if hasattr(e, 'reason'):
-        print('reason: ', e.reason)
-except:  #没有全部列出来的异常，但是发生了异常，则在此处执行
-    print('what is now ....')
-else:  #没有异常的情况
-    print('Request Successfully')
-finally:
-    print('Request completed')
-
+# #异常处理
+# try:
+#     response = urllib.request.urlopen('http://www.baidu.com')
+# except urllib.error.URLError as e:
+#     if hasattr(e, 'code'):
+#         print('code: ', e.code)
+#     if hasattr(e, 'reason'):
+#         print('reason: ', e.reason)
+# except:  #没有全部列出来的异常，但是发生了异常，则在此处执行
+#     print('what is now ....')
+# else:  #没有异常的情况
+#     print('Request Successfully')
+# finally:
+#     print('Request completed')
 
 
 
