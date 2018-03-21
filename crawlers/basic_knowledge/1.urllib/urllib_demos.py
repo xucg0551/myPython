@@ -129,5 +129,6 @@ import http.cookiejar
 
 
 
-
+ddd = urllib.parse.urlparse('http://127.0.0.1:8080/find?key1=val1&key2=val2&key3=val3')
+print(ddd.query)
 
