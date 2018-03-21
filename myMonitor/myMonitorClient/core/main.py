@@ -6,19 +6,13 @@ from . import client
 
 class CommandLineHandler(object):
     def __init__(self, sys_args):
-        self.sys_args = sys_args
+        # self.sys_args = sys_args
         #如果启动没有带参数，退出并提示
-        self.exit_message() if len(sys_args) < 2 else self.allocate()
-        # if len(sys_args) < 2 :
-        #     self.exit_message()
-        # self.allocate()
+        self.exit_message() if len(sys_args) < 2 else self.allocate(sys_args[1])
 
     #根据输入的命令行参数进行反射执行
-    def allocate(self):
-        if hasattr(self, self.sys_args[1]):
-            getattr(self, self.sys_args[1])()
-        else:
-            self.exit_message()
+    def allocate(self, func_str):
+        getattr(self, func_str)() if hasattr(self, func_str) else self.exit_message()
 
     #启动服务
     def start(self):
