@@ -1,0 +1,13 @@
+urllib模块分别有如下几个模块
+
+urllib.request    请求模块
+urllib.error      异常处理模块
+urllib.parse      url解析模块
+urllib.robotparser  robots.txt解析模块urlencode
+
+可以通过urllib.parse.urlencode 把 字典转换成 get参数方式
+例：
+｛'key1':'val1','key2':'val2'｝----> key2=val2&key1=val1
+
+可以通过urllib.parse.urlparse 解析url
+可以通过urllib.parse.urljoin 拼接url

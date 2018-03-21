@@ -7,8 +7,8 @@ from django.utils.encoding import python_2_unicode_compatible
 class Host(models.Model):
     name = models.CharField(u'名称', max_length=64, unique=True)
     ip_addr = models.GenericIPAddressField(u'IP地址', unique=True)
-    host_groups = models.ManyToManyField('HostGroup', blank=True)
-    templates = models.ManyToManyField('Template', blank=True)
+    host_groups = models.ManyToManyField('HostGroup', blank=True)  #一台主机可以属于多个主机群，一个主机群也可以有多台主机
+    templates = models.ManyToManyField('Template', blank=True)   #一台主机可以有多套模板，一套模板也可以对应多台主机
     monitored_by_choices = (
         ('agent', 'Agent'),
         ('snmp', 'SNMP'),
@@ -32,15 +32,15 @@ class Host(models.Model):
 @python_2_unicode_compatible
 class HostGroup(models.Model):
     name = models.CharField(u'名称', max_length=64, unique=True)
-    templates = models.ManyToManyField('Template', blank=True)
+    templates = models.ManyToManyField('Template', blank=True)   #一个主机群可以有多套模板，一个模板也可以被多个主机群拥有
     memo = models.TextField(u'备注', blank=True, null=True)
 
     def __str__(self):
         return self.name
 
 @python_2_unicode_compatible
-class ServiceIndex(models.Model):
-    name = models.CharField(max_length=64)
+class ServiceIndex(models.Model):   #监控指标
+    name = models.CharField(max_length=64, unique=True)
     key = models.CharField(max_length=64)
     data_type_choices = (
         ('int', "int"),
@@ -58,7 +58,7 @@ class Service(models.Model):
     name = models.CharField(u'服务名称', max_length=64, unique=True)
     interval = models.IntegerField(u'监控间隔', default=60)
     plugin_name = models.CharField(u'插件名', max_length=64, default='n/a')
-    items = models.ManyToManyField('ServiceIndex', verbose_name=u'指标列表', blank=True)
+    items = models.ManyToManyField('ServiceIndex', verbose_name=u'指标列表', blank=True)  #一个服务有多个监控指标，一个指标也可以属于多个服务
     has_sub_service = models.BooleanField(u'是否有子服务',default=False, help_text=u'如果一个服务还有独立的子服务 ,选择这个,比如 网卡服务有多个独立的子网卡')
     memo = models.CharField(u'备注', max_length=128, blank=True, null=True)
 
@@ -68,7 +68,7 @@ class Service(models.Model):
 @python_2_unicode_compatible
 class Template(models.Model):
     name = models.CharField(u'模板名称', max_length=64, unique=True)
-    services = models.ManyToManyField('Service', verbose_name=u'服务列表')
+    services = models.ManyToManyField('Service', verbose_name=u'服务列表')  #一个模板对应多个服务，一个服务也可以对应多个模板
 
     def __str__(self):
         return self.name
@@ -151,19 +151,5 @@ class ActionOperation(models.Model):
     def __str__(self):
         return self.name
 
-# class Student(models.Model):
-#     name = models.CharField(max_length=32)
-#     # classroom = models.ForeignKey('Classroom', on_delete=models.CASCADE)
-#     classroom = models.ManyToManyField('Classroom')
-#
-#     def __str__(self):
-#         return self.name
-#
-# class Classroom(models.Model):
-#     name = models.CharField(max_length=20)
-#
-#     def __str__(self):
-#         return self.name
-
-
-
+# @python_2_unicode_compatible
+# class UserProfile（

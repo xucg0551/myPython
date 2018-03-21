@@ -3,14 +3,9 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
-def index(request):
-    print(request.path)
-    return HttpResponseRedirect(reverse('login', args=(1024,)))
 
-def login(request, id):
-    print(request.path)
-    print(request.user)
-    print(request.GET.urlencode)
-    print(request.META)
-    print(request.COOKIES)
-    return HttpResponse(id)
+def cookie_test(request):
+    response = HttpResponse('This is a cookie test')
+    response.set_cookie('myMonitorId', '102478955')
+    response.set_cookie('myMonitroId2', '212456666')
+    return response

@@ -89,20 +89,24 @@ RULE_FULL = {
 
 
 
-# 第一个进球是否满足条件
-possibilities = RULE_FULL['all_bets_info']['arleady_goals'][2]
-goals_time = [9, 80]
-first_goal_time = float(goals_time[0]) if len(goals_time) != 0 else 0
+# # 第一个进球是否满足条件
+# possibilities = RULE_FULL['all_bets_info']['arleady_goals'][2]
+# goals_time = [9, 80]
+# first_goal_time = float(goals_time[0]) if len(goals_time) != 0 else 0
+#
+# if isinstance(possibilities, list):
+#     for infos in possibilities:
+#         is_possibility_ok = (
+#         first_goal_time >= infos['first_goal_times']['min'] and first_goal_time <= infos['first_goal_times']['max'])
+#         if is_possibility_ok:
+#             break
+# elif isinstance(possibilities, dict):
+#     infos = possibilities
+#
+#
+# print(infos)
+# print(infos.get('forbidden_quick_goal', False))
 
-if isinstance(possibilities, list):
-    for infos in possibilities:
-        is_possibility_ok = (
-        first_goal_time >= infos['first_goal_times']['min'] and first_goal_time <= infos['first_goal_times']['max'])
-        if is_possibility_ok:
-            break
-elif isinstance(possibilities, dict):
-    infos = possibilities
 
 
-print(infos)
-print(infos.get('forbidden_quick_goal', False))
+print("\033[31;1m%s\033[0m" % 'fasdfasdfasdfasf')
