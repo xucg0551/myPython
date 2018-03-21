@@ -37,6 +37,7 @@ class ClientHandler(object):
             pass
 
 
+    #执行操作
     def run_forever(self):
         exit_flag = False
         config_last_update_time = 0
