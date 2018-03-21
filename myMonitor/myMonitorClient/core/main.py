@@ -1,7 +1,5 @@
 #__author__ = ‘Shane‘
 # -*- coding: utf-8 -*-
-
-
 from . import client
 
 class CommandLineHandler(object):
