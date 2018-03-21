@@ -21,12 +21,9 @@ class ClientHandler(object):
             #当前主机所属的主机组对应的模板
             for host_group in host_obj.host_groups.select_related():
                 template_list.extend(host_group.templates.select_related())
-            print(template_list)
-
             #遍历所有模板，取出服务
             for template in template_list:
                 for service in template.services.select_related():
-                    print(service)
                     self.client_configs['services'][service.name] = [service.plugin_name, service.interval]
         except ObjectDoesNotExist as e:
             pass
