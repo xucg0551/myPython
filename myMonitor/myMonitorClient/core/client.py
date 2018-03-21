@@ -27,7 +27,7 @@ class ClientHandler(object):
             try:
                 data = request.urlopen(req, timeout=settings.configs['RequestTimeout']).read().decode('utf8')
                 return data
-            except error.URLError as e:  #判断异常
+            except error.URLError as e:  #判断异常  HTTPError是URLError, HTTPError有code属性
                 if hasattr(e, 'code'):
                     print(e.code)
                 if hasattr(e, 'reason'):
