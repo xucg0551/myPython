@@ -16,8 +16,15 @@ class ClientHandler(object):
     def fetch_configs(self):
         try:
             host_obj = models.Host.objects.get(id = self.client_id)
-            print(host_obj)
-            return 1024
+            template_list = list(host_obj.templates.select_related())  # templates = list(host_obj.templates.all())
+            for host_group in host_obj.host_groups.select_related():
+                template_list.extend(host_group.templates.select_related())
+            print(template_list)
+
+            for template in template_list:
+                for service in template.services.select_related():
+                    print(service)
+                    self.client_configs['services'][service.name] = [service.plugin_name, service.interval]
         except ObjectDoesNotExist as e:
             pass
         return self.client_configs

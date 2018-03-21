@@ -4,7 +4,7 @@ from urllib import request
 import time
 from config import settings
 import json
-import urllib
+from urllib import error
 
 
 class ClientHandler(object):
@@ -25,9 +25,13 @@ class ClientHandler(object):
         if action in ('get', 'GET'):
             req = request.Request(http_url)
             try:
-                data = request.urlopen(req).read().decode('utf8')
+                data = request.urlopen(req, timeout=settings.configs['RequestTimeout']).read().decode('utf8')
                 return data
-            except Exception as e:
+            except error.URLError as e:  #判断异常
+                if hasattr(e, 'code'):
+                    print(e.code)
+                if hasattr(e, 'reason'):
+                    print(e.reason)
                 exit("\033[31;1m%s\033[0m" % e)
         elif action in ('post', 'POST'):
             pass
