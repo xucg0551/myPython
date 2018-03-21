@@ -3,6 +3,7 @@
 
 import urllib.request
 import urllib.parse
+import urllib.error
 
 
 #数据请求的两种方法
@@ -92,23 +93,41 @@ import http.cookiejar
 # for item in cookie:
 #     print(item.name+'='+item.value)
 
-#存储cookie
-filename = "cookie.txt"
-#两种格式的cookie MozillaCookieJar和LWPCookieJar
-cookie = http.cookiejar.MozillaCookieJar(filename)
-# cookie = http.cookiejar.LWPCookieJar(filename)
-handler = urllib.request.HTTPCookieProcessor(cookie)
-opener = urllib.request.build_opener(handler)
-response = opener.open('http://www.baidu.com')
-cookie.save(ignore_discard=True, ignore_expires=True)
+# #存储cookie
+# filename = "cookie.txt"
+# #两种格式的cookie MozillaCookieJar和LWPCookieJar
+# cookie = http.cookiejar.MozillaCookieJar(filename)
+# # cookie = http.cookiejar.LWPCookieJar(filename)
+# handler = urllib.request.HTTPCookieProcessor(cookie)
+# opener = urllib.request.build_opener(handler)
+# response = opener.open('http://www.baidu.com')
+# cookie.save(ignore_discard=True, ignore_expires=True)
+#
+# #请求带上cookie
+# cookie = http.cookiejar.MozillaCookieJar()
+# cookie.load('cookie.txt', ignore_discard=True, ignore_expires=True)
+# handler = urllib.request.HTTPCookieProcessor(cookie)
+# opener = urllib.request.build_opener(handler)
+# response = opener.open('http://www.baidu.com')
+# print(response.read().decode('utf-8'))
 
-#请求带上cookie
-cookie = http.cookiejar.MozillaCookieJar()
-cookie.load('cookie.txt', ignore_discard=True, ignore_expires=True)
-handler = urllib.request.HTTPCookieProcessor(cookie)
-opener = urllib.request.build_opener(handler)
-response = opener.open('http://www.baidu.com')
-print(response.read().decode('utf-8'))
+
+#异常处理
+try:
+    response = urllib.request.urlopen('http://www.baidu.com')
+except urllib.error.URLError as e:
+    if hasattr(e, 'code'):
+        print('code: ', e.code)
+    if hasattr(e, 'reason'):
+        print('reason: ', e.reason)
+except:  #没有全部列出来的异常，但是发生了异常，则在此处执行
+    print('what is now ....')
+else:  #没有异常的情况
+    print('Request Successfully')
+finally:
+    print('Request completed')
+
+
 
 
 
