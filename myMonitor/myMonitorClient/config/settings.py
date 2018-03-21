@@ -10,6 +10,5 @@ configs ={
         'service_report': ['api/client/service/report/','post'],
     },
     'RequestTimeout':30,
-    'ConfigUpdateInterval': 10, #5 mins as default
-
+    'ConfigUpdateInterval': 5*60, #5 mins as default
 }
