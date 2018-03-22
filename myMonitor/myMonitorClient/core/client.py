@@ -42,7 +42,7 @@ class ClientHandler(object):
                 res_data = request.urlopen(req,timeout=settings.configs['RequestTimeout'])
                 callback = res_data.read()
                 callback = json.loads(callback)
-                print "\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(action,abs_url,callback)
+                print("\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(action,http_url,callback))
                 return callback
             except Exception as e:
                 print('---exec',e)
@@ -88,7 +88,7 @@ class ClientHandler(object):
             request_action = settings.configs['urls']['service_report'][1]
             request_url = settings.configs['urls']['service_report'][0]
             print('---report data:', report_data)
-            self.url_request(request_action, request_url, params=report_data)
+            self.request_data(request_action, request_url, params=report_data)
 
         else:
              print("\033[31;1mCannot find service [%s]'s plugin name [%s] in plugin_api\033[0m"% (service_name,plugin_name ))
