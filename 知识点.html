@@ -1,2 +1,10 @@
 1.学会reverse、HttpResponseRedirect的联合使用
 2.request.path, request.user
+3.request.FILES,获取客户端上传的文件，示例代码
+    if request.method == 'POST':
+        myFile = request.FILES.get('file', None)
+        if not myFile:
+            return HttpResponse('no files for upload')
+        with open('{}'.format(myFile.name), 'wb') as f:
+            for chunk in myFile.chunks():
+                f.write(chunk)
