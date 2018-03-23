@@ -7,6 +7,9 @@ import json
 from urllib import error
 import threading
 from plugins import plugin_api
+import requests
+from requests.exceptions import ReadTimeout, ConnectionError, RequestException
+
 
 
 class ClientHandler(object):
@@ -21,32 +24,59 @@ class ClientHandler(object):
         latest_configs = json.loads(data)
         self.monitored_services.update(latest_configs)
 
-    #请求数据
+    #请求数据  两种方法实现  urilib库和request库
     def request_data(self, action, url, **datas):
         http_url = 'http://{}:{}/{}'.format(settings.configs['Server'], settings.configs['ServerPort'], url)
         if action in ('get', 'GET'): #get请求
-            req = request.Request(http_url)
+            #1. urllib库实现
+            # req = request.Request(http_url)
+            # try:
+            #     data = request.urlopen(req, timeout=settings.configs['RequestTimeout']).read().decode('utf8')
+            #     return data
+            # except error.URLError as e:  #判断异常  HTTPError是URLError, HTTPError有code属性
+            #     if hasattr(e, 'code'):
+            #         print(e.code)
+            #     if hasattr(e, 'reason'):
+            #         print(e.reason)
+            #     exit("\033[31;1m%s\033[0m" % e)
+
+            #2. requests库实现
             try:
-                data = request.urlopen(req, timeout=settings.configs['RequestTimeout']).read().decode('utf8')
-                return data
-            except error.URLError as e:  #判断异常  HTTPError是URLError, HTTPError有code属性
-                if hasattr(e, 'code'):
-                    print(e.code)
-                if hasattr(e, 'reason'):
-                    print(e.reason)
+                response = requests.get(http_url, timeout=settings.configs['RequestTimeout'])
+                return response.text
+            except Exception as e:
                 exit("\033[31;1m%s\033[0m" % e)
+            # except ReadTimeout as e:
+            #     print('ReadTimeout')
+            # except ConnectionError:
+            #     print('ConnectionError')
+            # except RequestException:
+            #     print('RequestException')
         elif action in ('post', 'POST'):  #post请求
+            #1.urllib实现
+            # try:
+            #     # 1.构造Request对象，参数data必须为二进制，方法为POST
+            #     # 2.返回的json串反序列化
+            #     data_encode = bytes(parse.urlencode(datas['params']),encoding='utf8')  #变成二进制流
+            #     req = request.Request(url=http_url,data=data_encode, method="POST")    #构造Request对象
+            #     res_data = request.urlopen(req,timeout=settings.configs['RequestTimeout'])
+            #     callback = res_data.read().decode('utf8')  #解码成unicode
+            #     callback = json.loads(callback)
+            #     print("\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(action,http_url,callback))
+            #     return callback
+            # except Exception as e:
+            #     print('---exec',e)
+            #     exit("\033[31;1m%s\033[0m"%e)
+
+            #requests实现
             try:
-                data_encode = parse.urlencode(datas['params'])
-                req = request.Request(url=http_url,data=data_encode)
-                res_data = request.urlopen(req,timeout=settings.configs['RequestTimeout'])
-                callback = res_data.read()
-                callback = json.loads(callback)
-                print("\033[31;1m[%s]:[%s]\033[0m response:\n%s" %(action,http_url,callback))
+                response = requests.post(http_url, data=datas['params'])
+                callback = json.loads(response.text)
+                print("\033[31;1m[%s]:[%s]\033[0m response:\n%s" % (action, http_url, callback))
                 return callback
             except Exception as e:
-                print('---exec',e)
-                exit("\033[31;1m%s\033[0m"%e)
+                exit("\033[31;1m%s\033[0m" % e)
+
 
 
     #执行操作

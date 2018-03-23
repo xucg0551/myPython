@@ -4,6 +4,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from . import models
 
+
 class ClientHandler(object):
     def __init__(self, client_id):
         self.client_id = client_id
@@ -28,3 +29,5 @@ class ClientHandler(object):
         except ObjectDoesNotExist as e:
             pass
         return self.client_configs
+
+
