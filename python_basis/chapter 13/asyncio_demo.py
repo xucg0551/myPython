@@ -79,7 +79,7 @@ async def test_single_proxy(proxy):
                     "https": "https://120.205.70.102:8060",
                 }
 
-                async with session.get(url='http://www.ifeng.com/', proxy=real_proxy, timeout=10) as response:
+                async with session.get(url='http://www.ifeng.com/', proxy=real_proxy, timeout=5) as response:
                     if response.status == 200:
                         # self._conn.put(proxy)
                         print('Valid proxy', proxy)
