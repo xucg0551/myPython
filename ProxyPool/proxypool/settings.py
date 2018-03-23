@@ -9,7 +9,7 @@ PORT = 6379
 PASSWORD = ''
 
 # 获得代理测试时间界限
-get_proxy_timeout = 9
+PROXY_TIMEOUT = 9
 
 # 代理池数量界限
 POOL_LOWER_THRESHOLD = 20

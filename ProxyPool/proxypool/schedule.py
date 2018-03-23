@@ -32,7 +32,7 @@ class ValidityTester(object):
                     real_proxy = 'http://' + proxy
                     print('Testing', proxy)
                     # self._conn.put(proxy)
-                    async with session.get(self.test_api, proxy=real_proxy, timeout=get_proxy_timeout) as response:
+                    async with session.get(self.test_api, proxy=real_proxy, timeout=PROXY_TIMEOUT) as response:
                         if response.status == 200:
                             self._conn.put(proxy)
                             print('Valid proxy', proxy)
