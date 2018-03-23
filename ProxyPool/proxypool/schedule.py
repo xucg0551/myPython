@@ -34,6 +34,7 @@ class ValidityTester(object):
                     # self._conn.put(proxy)
                     async with session.get(self.test_api, proxy=real_proxy, timeout=PROXY_TIMEOUT) as response:
                         if response.status == 200:
+                            #如果代理有效，则加入redis中
                             self._conn.put(proxy)
                             print('Valid proxy', proxy)
                 except Exception as e:
@@ -44,13 +45,17 @@ class ValidityTester(object):
             print('Invalid proxy', proxy)
             pass
 
+
+    #异步测试
     def test(self):
         """
         aio test all proxies.
         """
         print('ValidityTester is working')
         try:
+            #获取event_loop
             loop = asyncio.get_event_loop()
+            #多个协程封装组一组tasks运行
             tasks = [self.test_single_proxy(proxy) for proxy in self._raw_proxies]
             loop.run_until_complete(asyncio.wait(tasks))
         except ValueError:
@@ -79,8 +84,11 @@ class PoolAdder(object):
     def add_to_queue(self):
         print('PoolAdder is working')
         proxy_count = 0
+
+        #如果当前IP有效数小于最大的阀值，则循环获取
+        #获取IP后，也要进行验证(self._tester.test())，并不能直接放进redis里
         while not self.is_over_threshold():
-            for callback_label in range(self._crawler.__CrawlFuncCount__):
+            for callback_label in range(self._crawler.__CrawlFuncCount__):  #这里代码是精华！！！！！！，通过metaclass充分实现了设计模式中的"开闭"原则
                 callback = self._crawler.__CrawlFunc__[callback_label]
                 raw_proxies = self._crawler.get_raw_proxies(callback)
                 # test crawled proxies
@@ -100,18 +108,26 @@ class Schedule(object):
         """
         Get half of proxies which in redis
         """
+        #生成一个缓存对象、检测代理的对象
         conn = RedisClient()
         tester = ValidityTester()
+
+        #循环验证，每次取一半代理进行验证
         while True:
             print('Refreshing ip')
+
+            # 从redis里获取1/2的IP代理，并从缓存里删除已经取出来的count个代理
             count = int(0.5 * conn.queue_len)
             if count == 0:
                 print('Waiting for adding')
                 time.sleep(cycle)
                 continue
             raw_proxies = conn.get(count)
+
+            #进行代理的测试验证(异步验证)
             tester.set_raw_proxies(raw_proxies)
             tester.test()
+
             time.sleep(cycle)
 
     @staticmethod
@@ -121,15 +137,18 @@ class Schedule(object):
         """
         If the number of proxies less than lower_threshold, add proxy
         """
+        # 生成一个缓存对象、获取代理的对象
         conn = RedisClient()
         adder = PoolAdder(upper_threshold)
+
+        #无限循环获取代理，如果有效IP小于最小的阀值，则爬取IP代理
         while True:
             if conn.queue_len < lower_threshold:
                 adder.add_to_queue()
             time.sleep(cycle)
 
     def run(self):
-        print('Ip processing running')
+        #开辟两个进程，一个用于验证reids里的IP(因为redis里的IP也会随时失效)，另一个用于获取IP代理，对获取的IP也要进行验证
         valid_process = Process(target=Schedule.valid_proxy)
         check_process = Process(target=Schedule.check_pool)
         valid_process.start()
