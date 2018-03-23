@@ -93,7 +93,10 @@ class PoolAdder(object):
                 raw_proxies = self._crawler.get_raw_proxies(callback)
                 # test crawled proxies
                 self._tester.set_raw_proxies(raw_proxies)
+                #对爬取的IP代理进行验证
                 self._tester.test()
+
+                #这一句有疑惑，应该是累加有效的proxies吧 ？
                 proxy_count += len(raw_proxies)
                 if self.is_over_threshold():
                     print('IP is enough, waiting to be used')
