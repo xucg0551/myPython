@@ -55,9 +55,9 @@ import requests, json
 # print(response.text)
 #
 # data = {'name': 'germey', 'age': '22'}
-# headers = {
-#     'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
-# }
+headers = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_4) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36'
+}
 # response = requests.post("http://httpbin.org/post", data=data, headers=headers)
 # print(response.json())
 
@@ -81,23 +81,24 @@ import requests, json
 # print(response.text)
 # print(response.cookies)
 
-# #代理设置
-# proxies = {
-#   "http": "http://127.0.0.1:9743",
-#   "https": "https://127.0.0.1:9743",
-# }
-#
-# response = requests.get("https://www.taobao.com", proxies=proxies)
-# print(response.status_code)
+#代理设置
+proxies = {
+  "http": "http://120.205.70.102:8060",
+  "https": "https://120.205.70.102:8060",
+}
 
-#异常处理
-from requests.exceptions import ReadTimeout, ConnectionError, RequestException
-try:
-    response = requests.get("http://httpbin.org/get", timeout = 0.5)
-    print(response.status_code)
-except ReadTimeout:
-    print('Timeout')
-except ConnectionError:
-    print('Connection error')
-except RequestException:
-    print('Error')
+response = requests.get("http://httpbin.org/get?name=germey&age=22", proxies=proxies, headers=headers, timeout=20)
+print(response.text)
+print(response.status_code)
+
+# #异常处理
+# from requests.exceptions import ReadTimeout, ConnectionError, RequestException
+# try:
+#     response = requests.get("http://httpbin.org/get", timeout = 0.5)
+#     print(response.status_code)
+# except ReadTimeout:
+#     print('Timeout')
+# except ConnectionError:
+#     print('Connection error')
+# except RequestException:
+#     print('Error')

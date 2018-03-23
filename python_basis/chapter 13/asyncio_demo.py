@@ -1,7 +1,10 @@
 #__author__ = ‘Shane‘
 # -*- coding: utf-8 -*-
 
+import aiohttp
 import asyncio
+# from aiohttp.errors import ProxyConnectionError, ServerDisconnectedError, ClientResponseError, ClientConnectionError
+
 
 # @asyncio.coroutine
 # def hello():
@@ -49,11 +52,54 @@ import asyncio
 # loop.run_until_complete(asyncio.wait(tasks))
 # loop.close()
 
-async def hello():
-    print('Hello world!')
-    r = await asyncio.sleep(1)
-    print('Hello again')
+# async def hello():
+#     print('Hello world!')
+#     r = await asyncio.sleep(1)
+#     print('Hello again')
+#
+# loop = asyncio.get_event_loop()
+# loop.run_until_complete(hello())
+# loop.close()
 
-loop = asyncio.get_event_loop()
-loop.run_until_complete(hello())
-loop.close()
+async def test_single_proxy(proxy):
+    """
+    text one proxy, if valid, put them to usable_proxies.
+    """
+    try:
+        async with aiohttp.ClientSession() as session:
+            try:
+                if isinstance(proxy, bytes):
+                    proxy = proxy.decode('utf-8')
+                real_proxy = 'http://' + proxy
+                print('Testing', proxy )
+                # self._conn.put(proxy)
+
+                proxies = {
+                    "http": "http://120.205.70.102:8060",
+                    "https": "https://120.205.70.102:8060",
+                }
+
+                async with session.get(url='http://www.ifeng.com/', proxy=real_proxy) as response:
+                    if response.status == 200:
+                        # self._conn.put(proxy)
+                        print('Valid proxy', proxy)
+            except Exception as e:
+                print('Invalid proxy', proxy)
+    except Exception as s:
+        print(s)
+        pass
+
+
+def test():
+    """
+    aio test all proxies.
+    """
+    print('ValidityTester is working')
+    try:
+        loop = asyncio.get_event_loop()
+        tasks = [test_single_proxy(proxy) for proxy in ['120.205.70.102:8060']]
+        loop.run_until_complete(asyncio.wait(tasks))
+    except ValueError:
+        print('Async Error')
+
+test()

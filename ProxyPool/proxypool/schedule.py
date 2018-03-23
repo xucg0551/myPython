@@ -7,7 +7,7 @@ import time
 from .getter import FreeProxyGetter
 from .error import ResourceDepletionError
 import aiohttp, asyncio
-from aiohttp.errors import ProxyConnectionError, ServerDisconnectedError, ClientResponseError, ClientConnectionError
+# from aiohttp.errors import ProxyConnectionError, ServerDisconnectedError, ClientResponseError, ClientConnectionError
 
 class ValidityTester(object):
     test_api = TEST_API
@@ -31,14 +31,17 @@ class ValidityTester(object):
                         proxy = proxy.decode('utf-8')
                     real_proxy = 'http://' + proxy
                     print('Testing', proxy)
+                    # self._conn.put(proxy)
                     async with session.get(self.test_api, proxy=real_proxy, timeout=get_proxy_timeout) as response:
                         if response.status == 200:
                             self._conn.put(proxy)
                             print('Valid proxy', proxy)
-                except (ProxyConnectionError, TimeoutError, ValueError):
+                except Exception as e:
                     print('Invalid proxy', proxy)
-        except (ServerDisconnectedError, ClientResponseError,ClientConnectionError) as s:
-            print(s)
+                # except (ProxyConnectionError, TimeoutError, ValueError):
+                #     print('Invalid proxy', proxy)
+        except Exception as e:
+            print('Invalid proxy', proxy)
             pass
 
     def test(self):
