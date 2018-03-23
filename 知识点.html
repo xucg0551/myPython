@@ -5,6 +5,31 @@
         myFile = request.FILES.get('file', None)
         if not myFile:
             return HttpResponse('no files for upload')
-        with open('{}'.format(myFile.name), 'wb') as f:
+        with open(myFile.name, 'wb') as f:
             for chunk in myFile.chunks():
                 f.write(chunk)
+
+
+
+
+4.JSON和pickle模块的区别
+    1、JSON只能处理基本数据类型(比如datetime，就要用自定义编解码函数解决)。pickle能处理所有Python的数据类型。
+    2、JSON用于各种语言之间的字符转换。pickle用于Python程序对象的持久化或者Python程序间对象网络传输，但不同版本的Python序列化可能还有差异。
+
+
+5.多线程比，协程有何优势？
+    最大的优势就是协程极高的执行效率。因为子程序切换不是线程切换，而是由程序自身控制，因此，没有线程切换的开销，和多线程比，线程数量越多，协程的性能优势就越明显。
+    第二大优势就是不需要多线程的锁机制，因为只有一个线程，也不存在同时写变量冲突，在协程中控制共享资源不加锁，只需要判断状态就好了，所以执行效率比多线程高很多。
+    因为协程是一个线程执行，那怎么利区别用多核CPU呢？最简单的方法是多进程+协程，既充分利用多核，又充分发挥协程的高效率，可获得极高的性能。
+
+
+6. __new__和__int__的区别
+    __new__ 是在__init__之前被调用的特殊方法
+    __new__是用来创建对象并返回这个对象
+    而__init__只是将传入的参数初始化给对象
+    # 实际中,你很少会用到__new__，除非你希望能够控制对象的创建
+    # 在这里，类是我们要创建的对象，我们希望能够自定义它，所以我们改写了__new__
+    # 如果你希望的话，你也可以在__init__中做些事情
+
+6. 单例模式的实现
+   参见chapter 13
