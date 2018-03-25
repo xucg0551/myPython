@@ -50,6 +50,7 @@ class HtmlParser(object):
         data={}
         data['url']=page_url
         title = soup.find('dd',class_='lemmaWgt-lemmaTitle-title').find('h1')
+        print(title)
         data['title']=title.get_text()
         summary = soup.find('div',class_='lemma-summary')
         #获取到tag中包含的所有文版内容包括子孙tag中的内容,并将结果作为Unicode字符串返回

@@ -1,6 +1,9 @@
 from HtmlDownloader import HtmlDownloader
 from HtmlParser import HtmlParser
 from multiprocessing.managers import BaseManager
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import settings
 
 class SpiderWork(object):
     def __init__(self):
@@ -8,10 +11,9 @@ class SpiderWork(object):
         BaseManager.register('get_task_queue')
         BaseManager.register('get_result_queue')
         # 实现第二步：连接到服务器:
-        server_addr = '127.0.0.1'
-        print('Connect to server {}...'.format(server_addr))
+        print('Connect to server {}...'.format(settings.HOST))
         # 端口和验证口令注意保持与服务进程设置的完全一致:
-        self.m = BaseManager(address=(server_addr, 5000), authkey='baike'.encode())
+        self.m = BaseManager(address=(settings.HOST, settings.PORT), authkey='baike'.encode())
         # 从网络连接:
         self.m.connect()
         # 实现第三步：获取Queue的对象:

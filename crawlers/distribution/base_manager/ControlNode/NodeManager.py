@@ -2,14 +2,12 @@ from multiprocessing.managers import BaseManager
 from multiprocessing import Queue, Process
 from UrlManager import UrlManager
 from DataOutput import DataOutput
-# from base_manager import settings
 import time
+import os, sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+import settings
 
 class NodeManager(object):
-    def __init__(self):
-        self.host = '127.0.0.1'
-        self.port = 5000
-
     def start_manager(self, url_queue, result_queue):
         '''
         创建一个分布式管理器
@@ -22,7 +20,7 @@ class NodeManager(object):
         BaseManager.register('get_task_queue', callable=lambda :url_queue)
         BaseManager.register('get_result_queue', callable=lambda : result_queue)
         # 设置host, 绑定端口，设置验证口令‘baike’。这个相当于对象的初始化
-        manager = BaseManager(address=(self.host, self.port), authkey='baike'.encode())
+        manager = BaseManager(address=(settings.HOST, settings.PORT), authkey='baike'.encode())
         return manager
 
     def url_manage_process(self, url_queue, connect_queue, root_url):
