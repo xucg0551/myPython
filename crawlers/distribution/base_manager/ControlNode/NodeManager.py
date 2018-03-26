@@ -34,7 +34,7 @@ class NodeManager(object):
                 url_queue.put(new_url)
                 print('old_url=', url_manager.old_url_size())
                 #当爬取2000个链接后就关闭，并保存进度
-                if url_manager.old_url_size() > 2000:
+                if url_manager.old_url_size() > 200:
                     #通知爬取节点结束
                     url_queue.put('end')
                     print('控制节点发起结束通知')
@@ -54,15 +54,23 @@ class NodeManager(object):
             try:
                 if not result_queue.empty():
                     content = result_queue.get(True)
-                    if connect_queue['new_urls'] == 'end':
+                    print('----------------content------------------')
+                    print(content)
+                    print('----------------new_urls--------------------')
+                    print(content['new_urls'])
+
+                    if content['new_urls'] == 'end':
                         print('结果分析进程接受通知然后结束')
                         store_queue.put('end')
                         return
+
+                    print('prepare to put connect_queue')
                     connect_queue.put(content['new_urls'])
                     store_queue.put(content['data'])
                 else:
                     time.sleep(0.1)
             except Exception as e:
+                print(e)
                 time.sleep(0.1)
 
     def store_process(self, store_queue):

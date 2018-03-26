@@ -4,6 +4,7 @@ from multiprocessing.managers import BaseManager
 import os, sys
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import settings
+import time
 
 class SpiderWork(object):
     def __init__(self):
@@ -29,7 +30,6 @@ class SpiderWork(object):
             try:
                 if not self.task.empty():
                     url = self.task.get()
-
                     if url =='end':
                         print('控制节点通知爬虫节点停止工作..')
                         #接着通知其它节点停止工作
@@ -38,7 +38,14 @@ class SpiderWork(object):
                     print('爬虫节点正在解析:%s'%url.encode('utf-8'))
                     content = self.downloader.download(url)
                     new_urls,data = self.parser.parser(url,content)
+                    print('--------------------new_urls----------------:')
+                    print(new_urls)
+                    print('-------------------data--------------------')
+                    print(data)
                     self.result.put({"new_urls":new_urls,"data":data})
+                else:
+                    print('task is empty now!!!')
+                    time.sleep(1)
             except EOFError as e:
                 print('连接工作节点失败')
                 return
