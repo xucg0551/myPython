@@ -42,7 +42,7 @@ class FreeProxyGetter(object, metaclass=ProxyMetaclass):
 
 
     def crawl_xicidaili(self):
-        for page in range(1, 4):
+        for page in range(1, 10):
             start_url = 'http://www.xicidaili.com/wt/{}'.format(page)
             html = get_page(start_url)
             ip_adress = re.compile('<td class="country"><img src="http://fs.xicidaili.com/images/flag/cn.png" alt="Cn" /></td>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
@@ -53,7 +53,7 @@ class FreeProxyGetter(object, metaclass=ProxyMetaclass):
                 yield result.replace(' ', '')
 
     def crawl_ip3366(self):
-        for page in range(1, 4):
+        for page in range(1, 10):
             start_url = 'http://www.ip3366.net/free/?stype=1&page={}'.format(page)
             html = get_page(start_url)
             ip_adress = re.compile('<tr>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
@@ -114,7 +114,7 @@ class FreeProxyGetter(object, metaclass=ProxyMetaclass):
                 yield result.replace(' ','')
 
     def crawl_kxdaili(self):
-        for i in range(1, 4):
+        for i in range(1, 10):
             start_url = 'http://www.kxdaili.com/ipList/{}.html#ip'.format(i)
             html = get_page(start_url)
             ip_adress = re.compile('<tr.*?>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')

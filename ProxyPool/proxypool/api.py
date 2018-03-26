@@ -19,7 +19,6 @@ def get_conn():
 
 @app.route('/')
 def index():
-    # print('////////////////////////////////////////////////////////////////////////////')
     return '<h2>Welcome to Proxy Pool System</h2>'
 
 
@@ -29,7 +28,6 @@ def get_proxy():
     Get a proxy
     """
 
-    # print('getgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetgetget')
     conn = get_conn()
     return conn.pop()
 
