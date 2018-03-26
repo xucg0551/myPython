@@ -4,7 +4,7 @@ import urllib.parse as urlparse
 
 class HtmlParser(object):
 
-    def parser(self,page_url,html_cont):
+    def parse(self,page_url,html_cont):
         '''
         用于解析网页内容抽取URL和数据
         :param page_url: 下载页面的URL

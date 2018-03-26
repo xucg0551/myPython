@@ -23,7 +23,6 @@ class SpiderWork(object):
         # 初始化网页下载器和解析器
         self.downloader = HtmlDownloader()
         self.parser = HtmlParser()
-        print('init finish')
 
     def crawl(self):
         while(True):
@@ -37,11 +36,7 @@ class SpiderWork(object):
                         return
                     print('爬虫节点正在解析:%s'%url.encode('utf-8'))
                     content = self.downloader.download(url)
-                    new_urls,data = self.parser.parser(url,content)
-                    print('--------------------new_urls----------------:')
-                    print(new_urls)
-                    print('-------------------data--------------------')
-                    print(data)
+                    new_urls,data = self.parser.parse(url,content)
                     self.result.put({"new_urls":new_urls,"data":data})
                 else:
                     print('task is empty now!!!')
@@ -51,7 +46,7 @@ class SpiderWork(object):
                 return
             except Exception as e:
                 print(e)
-                print('Crawl  fali')
+                print('Crawl failed')
 
 if __name__=="__main__":
     spider = SpiderWork()
