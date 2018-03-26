@@ -70,6 +70,11 @@ class UrlManager(object):
             pickle.dump(data, f)
 
     def load_progress(self, path):
+        '''
+        加载爬取进度
+        :param path:
+        :return:
+        '''
         print('[+] 从文件加载进度: {}'.format(path))
         try:
             with open(path, 'rb') as f:
