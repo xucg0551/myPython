@@ -58,7 +58,9 @@ class ValidityTester(object):
             #多个协程封装组一组tasks运行
             tasks = [self.test_single_proxy(proxy) for proxy in self._raw_proxies]
             loop.run_until_complete(asyncio.wait(tasks))
-        except ValueError:
+        except Exception as e:
+            print(e)
+            print(len(self._raw_proxies))
             print('Async Error')
 
 class PoolAdder(object):
