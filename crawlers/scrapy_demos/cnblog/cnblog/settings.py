@@ -66,8 +66,7 @@ NEWSPIDER_MODULE = 'cnblog.spiders'
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'cnblog.pipelines.CnblogPipeline': 300,
-   'cnblog.pipelines.MyImagePipeline':1,
-   #  'scrapy.pipelines.images.ImagesPipeline':1
+ #  'cnblog.pipelines.MyImagePipeline':1,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
