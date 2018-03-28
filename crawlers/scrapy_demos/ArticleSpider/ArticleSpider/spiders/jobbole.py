@@ -82,6 +82,4 @@ class JobboleSpider(scrapy.Spider):
         item_loader.add_css('tags', 'p.entry-meta-hide-on-mobile a::text')
         item_loader.add_css('content', 'div.entry')
 
-        article_item = item_loader.load_item()
-
-        yield article_item
+        yield item_loader.load_item()

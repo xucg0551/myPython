@@ -15,8 +15,7 @@ class GithubSpider(CrawlSpider):
 
     rules = (
         # 消息列表
-        Rule(LinkExtractor(allow=('/xucg0551/.*',),
-                           restrict_xpaths='//ul[@class="mini-repo-list"]/li'),
+        Rule(LinkExtractor(allow=('/xucg0551/.*',),restrict_xpaths='//ul[@class="mini-repo-list"]/li'),
              callback='parse_page'),
         # # 下一页, If callback is None follow defaults to True, otherwise it defaults to False
         # Rule(LinkExtractor(restrict_xpaths='//a[@class="next_page"]')),
