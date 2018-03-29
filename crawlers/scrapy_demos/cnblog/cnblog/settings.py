@@ -55,9 +55,12 @@ NEWSPIDER_MODULE = 'cnblog.spiders'
 DOWNLOADER_MIDDLEWARES = {
    # 'cnblog.middlewares.MyCustomDownloaderMiddleware': 543,
 
-    'cnblog.middlewares.RandomUserAgentMiddleware': 10,
-    'cnblog.middlewares.RandomProxyMiddleware': 1,
-    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None
+#user-agent and proxy middleware
+    # 'cnblog.middlewares.RandomUserAgentMiddleware': 10,
+    # 'cnblog.middlewares.RandomProxyMiddleware': 1,
+    # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None
+    'cnblog.middlewares.JSPageProxyMiddleware': 1,
+
 }
 
 # Enable or disable extensions

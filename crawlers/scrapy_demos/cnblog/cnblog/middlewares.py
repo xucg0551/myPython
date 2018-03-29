@@ -61,18 +61,18 @@ class CnblogSpiderMiddleware(object):
 #User-Agent中间件
 class RandomUserAgentMiddleware(object):
 
-    def __init__(self, user_agent_type):
-        self.user_agent_type = user_agent_type
+    def __init__(self, ua_type):
+        self.ua = UserAgent()
+        self.ua_type = ua_type
 
     @classmethod
     def from_crawler(cls, crawler):
         return cls(crawler.settings['USER_AGENT_TYPE'])  #settings 中的key一定要大写吗 ？
 
     def process_request(self, request, spider):
-        ua = UserAgent()
-        if self.user_agent_type:
-            user_agent = getattr(ua, self.user_agent_type)
-        request.headers.setdefault(b'User-Agent', user_agent)
+        def get_ua():
+            return getattr(self.ua, self.ua_type)
+        request.headers.setdefault(b'User-Agent', get_ua())
 
 #IP代理中间件
 class RandomProxyMiddleware(object):
@@ -80,3 +80,22 @@ class RandomProxyMiddleware(object):
         proxies = requests.get('http://127.0.0.1:5000/get')
         proxies = 'http://' + proxies.content.decode()
         request.meta['proxy'] = proxies
+
+
+from scrapy.http import HtmlResponse
+class JSPageProxyMiddleware(object):
+
+    # def __init__(self):
+    #     self.browser = webdriver.Chrome()
+    #     super(JSPageProxyMiddleware, self).__init__()
+
+    def process_request(self, request, spider):
+        # if request.url
+        if spider.name == 'cnblog_spider':
+            spider.browser.get(request.url)
+            import time
+            # time.sleep(3)
+            print('visiting {0}'.format(request.url))
+            return HtmlResponse(url=spider.browser.current_url, body=spider.browser.page_source, encoding='utf-8', request=request)
+
+

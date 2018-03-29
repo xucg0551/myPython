@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 import scrapy
 from cnblog.items import CnblogItem
-
+from selenium import webdriver
+from scrapy.xlib.pydispatch import dispatcher
+from scrapy import signals
 
 class CnblogSpider(scrapy.Spider):
     name = 'cnblog_spider'
@@ -23,7 +25,17 @@ class CnblogSpider(scrapy.Spider):
     # def test_post(self, response):
     #     pass
 
+    def __init__(self):
+        self.browser = webdriver.Chrome()
+        super(CnblogSpider, self).__init__()
+        dispatcher.connect(self.spider_close, signals.spider_closed)
+
+    def spider_close(self, spider):
+        print('spider closed')
+        self.browser.quit()
+
     def parse(self, response):
+        return
         articles = response.xpath(".//*[@class='day']")
 
         # #在shell中进行调试  ctrl+D可以恢复    妙！！！
