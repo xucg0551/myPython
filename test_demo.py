@@ -1,7 +1,7 @@
 #__author__ = ‘Shane‘
 # -*- coding: utf-8 -*-
 
-from datetime import datetime, timedelta
+from fake_useragent import UserAgent
 
-expires=timedelta(days=30)
-print(expires.total_seconds())
+ua = UserAgent()
+print(ua.chrome)

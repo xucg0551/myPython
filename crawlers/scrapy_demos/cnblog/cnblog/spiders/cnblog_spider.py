@@ -10,18 +10,25 @@ class CnblogSpider(scrapy.Spider):
         "http://www.cnblogs.com/qiyeboy/default.html?page=1"
     ]
 
-    def start_requests(self):
-        yield scrapy.Request('http://httpbin.org/post',method='POST', callback=self.test_post)
+    custom_settings = {
+        'ITEM_PIPELINES':{
+                    'cnblog.pipelines.CnblogPipeline': 300,
+                    'cnblog.pipelines.MyImagePipeline':1,
+        }
+    }
 
-    def test_post(self, response):
-        pass
+    # def start_requests(self):
+    #     yield scrapy.Request('http://httpbin.org/post',method='POST', callback=self.test_post)
+    #
+    # def test_post(self, response):
+    #     pass
 
     def parse(self, response):
         articles = response.xpath(".//*[@class='day']")
 
-        #在shell中进行调试  ctrl+D可以恢复    妙！！！
-        from scrapy.shell import inspect_response
-        inspect_response(response, self)
+        # #在shell中进行调试  ctrl+D可以恢复    妙！！！
+        # from scrapy.shell import inspect_response
+        # inspect_response(response, self)
 
         # 从每篇文章中抽取数据
         for article in articles:

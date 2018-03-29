@@ -52,9 +52,13 @@ NEWSPIDER_MODULE = 'cnblog.spiders'
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
-#DOWNLOADER_MIDDLEWARES = {
-#    'cnblog.middlewares.MyCustomDownloaderMiddleware': 543,
-#}
+DOWNLOADER_MIDDLEWARES = {
+   # 'cnblog.middlewares.MyCustomDownloaderMiddleware': 543,
+
+    'cnblog.middlewares.RandomUserAgentMiddleware': 10,
+    'cnblog.middlewares.RandomProxyMiddleware': 1,
+    # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None
+}
 
 # Enable or disable extensions
 # See http://scrapy.readthedocs.org/en/latest/topics/extensions.html
@@ -65,8 +69,8 @@ NEWSPIDER_MODULE = 'cnblog.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'cnblog.pipelines.CnblogPipeline': 300,
- #  'cnblog.pipelines.MyImagePipeline':1,
+    # 'cnblog.pipelines.CnblogPipeline': 300,
+    # 'cnblog.pipelines.MyImagePipeline':1,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
@@ -98,3 +102,5 @@ IMAGES_THUMBS = {
     'small': (50, 50),
     'big': (270, 270),
 }
+
+USER_AGENT_TYPE = 'ie'

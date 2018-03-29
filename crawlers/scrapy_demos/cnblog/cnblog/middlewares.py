@@ -6,6 +6,9 @@
 # http://doc.scrapy.org/en/latest/topics/spider-middleware.html
 
 from scrapy import signals
+from fake_useragent import UserAgent
+import requests
+
 
 
 class CnblogSpiderMiddleware(object):
@@ -54,3 +57,26 @@ class CnblogSpiderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+#User-Agent中间件
+class RandomUserAgentMiddleware(object):
+
+    def __init__(self, user_agent_type):
+        self.user_agent_type = user_agent_type
+
+    @classmethod
+    def from_crawler(cls, crawler):
+        return cls(crawler.settings['USER_AGENT_TYPE'])  #settings 中的key一定要大写吗 ？
+
+    def process_request(self, request, spider):
+        ua = UserAgent()
+        if self.user_agent_type:
+            user_agent = getattr(ua, self.user_agent_type)
+        request.headers.setdefault(b'User-Agent', user_agent)
+
+#IP代理中间件
+class RandomProxyMiddleware(object):
+    def process_request(self, request, spider):
+        proxies = requests.get('http://127.0.0.1:5000/get')
+        proxies = 'http://' + proxies.content.decode()
+        request.meta['proxy'] = proxies
