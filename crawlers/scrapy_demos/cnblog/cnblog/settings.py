@@ -57,7 +57,7 @@ DOWNLOADER_MIDDLEWARES = {
 
     'cnblog.middlewares.RandomUserAgentMiddleware': 10,
     'cnblog.middlewares.RandomProxyMiddleware': 1,
-    # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None
+    'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None
 }
 
 # Enable or disable extensions
