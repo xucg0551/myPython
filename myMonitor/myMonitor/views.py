@@ -6,6 +6,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 
 def cookie_test(request):
+    print(request.META)
     response = HttpResponse('This is a cookie test')
     response.set_cookie('myMonitorId', '102478955')
     response.set_cookie('myMonitroId2', '212456666')

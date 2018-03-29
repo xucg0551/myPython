@@ -74,22 +74,25 @@ headers = {
 # for key, value in response.cookies.items():
 #     print(key + '=' + value)
 
-# #模拟登陆(session，很重要)
-# s = requests.Session()
-# s.get('http://127.0.0.1:8080/cookie/')   #获取登陆成功后返回的cookies，s就会自动携带cookie进行后面的操作
-# response = s.get('http://127.0.0.1:8080/session/')
-# print(response.text)
-# print(response.cookies)
-
-#代理设置
-proxies = {
-  "http": "http://120.205.70.102:8060",
-  "https": "https://120.205.70.102:8060",
-}
-
-response = requests.get("http://httpbin.org/get?name=germey&age=22", proxies=proxies, headers=headers, timeout=20)
+#模拟登陆(session，很重要)
+s = requests.Session()
+response = s.get('http://127.0.0.1:8080/cookie/')   #获取登陆成功后返回的cookies，s就会自动携带cookie进行后面的操作
+print(response.cookies)
+response = s.get('http://127.0.0.1:8080/session/')
 print(response.text)
-print(response.status_code)
+print(response.cookies)
+
+# requests.get('http://127.0.0.1:8080/cookie/')
+
+# # #代理设置
+# proxies = {
+#   "http": "http://120.205.70.102:8060",
+#   "https": "https://120.205.70.102:8060",
+# }
+#
+# response = requests.get("http://127.0.0.1:8080/cookie/", headers=headers, timeout=20)
+# print(response.text)
+# print(response.status_code)
 
 # #异常处理
 # from requests.exceptions import ReadTimeout, ConnectionError, RequestException
