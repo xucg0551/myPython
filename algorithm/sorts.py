@@ -31,19 +31,6 @@ def load_random_array(file = 'numbers.json'):
 
 
 # 显示函数执行时间
-# def exectime(func):
-#     def inner(*args, **kwargs):
-#         begin = datetime.now()
-#         result = func(*args, **kwargs)
-#         end = datetime.now()
-#         inter = end - begin
-#         print('E-time:{0}.{1}'.format(
-#             inter.seconds,
-#             inter.microseconds
-#         ))
-#         return result
-#     return inner
-
 def exectime(type):
     def inner(func):
         def outter(*args, **kwargs):
