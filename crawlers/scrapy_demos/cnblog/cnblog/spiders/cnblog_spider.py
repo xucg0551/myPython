@@ -9,7 +9,8 @@ class CnblogSpider(scrapy.Spider):
     name = 'cnblog_spider'
     allowed_domains = ['cnblogs.com']
     start_urls = [
-        "http://www.cnblogs.com/qiyeboy/default.html?page=1"
+        # "http://www.cnblogs.com/qiyeboy/default.html?page=1"
+        "http://www.cnblogs.com/qiyeboyff/default.html?page=1"
     ]
 
     custom_settings = {
@@ -25,17 +26,30 @@ class CnblogSpider(scrapy.Spider):
     # def test_post(self, response):
     #     pass
 
-    def __init__(self):
-        self.browser = webdriver.Chrome()
-        super(CnblogSpider, self).__init__()
-        dispatcher.connect(self.spider_close, signals.spider_closed)
+    #selenimum example
+    # def __init__(self):
+    #     self.browser = webdriver.Chrome()
+    #     super(CnblogSpider, self).__init__()
+    #     dispatcher.connect(self.spider_close, signals.spider_closed)
+    #
+    # def spider_close(self, spider):
+    #     print('spider closed')
+    #     self.browser.quit()
+    handle_httpstatus_list = [404]
 
-    def spider_close(self, spider):
-        print('spider closed')
-        self.browser.quit()
+    def __init__(self):
+        self.failed_urls = []
+        dispatcher.connect(self.handle_spider_closed, signals.spider_closed)
+
+    def handle_spider_closed(self, spider, reason):
+        self.crawler.stats.set_value('failed_urls', ','.join(self.failed_urls))
+
 
     def parse(self, response):
-        return
+        if response.status == 404:
+            self.failed_urls.append(response.url)
+            self.crawler.stats.inc_value('failed_url')
+
         articles = response.xpath(".//*[@class='day']")
 
         # #在shell中进行调试  ctrl+D可以恢复    妙！！！

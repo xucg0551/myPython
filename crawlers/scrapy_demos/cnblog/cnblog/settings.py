@@ -59,7 +59,7 @@ DOWNLOADER_MIDDLEWARES = {
     # 'cnblog.middlewares.RandomUserAgentMiddleware': 10,
     # 'cnblog.middlewares.RandomProxyMiddleware': 1,
     # 'scrapy.downloadermiddlewares.useragent.UserAgentMiddleware': None
-    'cnblog.middlewares.JSPageProxyMiddleware': 1,
+    # 'cnblog.middlewares.JSPageProxyMiddleware': 1,
 
 }
 

@@ -2,8 +2,8 @@
 import scrapy
 import datetime as dt
 from scrapy import Request
-from ArticleSpider.items import JobBoleArticleItem, ArticleItemLoader
-from ArticleSpider.utils.common import get_md5
+from items import JobBoleArticleItem, ArticleItemLoader
+from utils.common import get_md5
 from scrapy.loader import ItemLoader
 
 
