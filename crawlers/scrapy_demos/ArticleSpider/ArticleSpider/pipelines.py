@@ -9,6 +9,8 @@ from scrapy.pipelines.images import ImagesPipeline
 import MySQLdb
 import MySQLdb.cursors
 from twisted.enterprise import adbapi
+from models.es_types import ArticleType
+from w3lib.html import remove_tags
 
 class ArticlespiderPipeline(object):
     def process_item(self, item, spider):
@@ -65,10 +67,16 @@ class MysqlTwistedPipeline(object):
     def do_insert(self, cursor, item):
         insert_sql, params = item.get_insert_sql()
         cursor.execute(insert_sql, params)
-        # insert_sql = """
-        #         insert into jobbole_article(title, url, create_date, fav_nums, url_object_id) values(%s, %s, %s, %s, %s)
-        #         """
-        # cursor.execute(insert_sql,(item['title'], item['url'], item['create_date'], item['fav_nums'], item['url_object_id']))
+
+
+class ElasticSearchPipeline(object):
+    #将数据写入到es中
+    def process_item(self, item, spider):
+        item.save_to_es()
+        return item
+
+
+
 
 
 

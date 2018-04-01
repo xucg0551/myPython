@@ -73,7 +73,9 @@ ITEM_PIPELINES = {
     # 'scrapy.pipelines.images.ImagesPipeline':1,
     # 'ArticleSpider.pipelines.ArticleImagePipeline': 1,
     # 'ArticleSpider.pipelines.MysqlPipeline': 1
-    'ArticleSpider.pipelines.MysqlTwistedPipeline': 1
+    # 'ArticleSpider.pipelines.MysqlTwistedPipeline': 1
+    'ArticleSpider.pipelines.ElasticSearchPipeline': 1
+
 
 }
 print(os.path.dirname(__file__))
