@@ -2,7 +2,9 @@
 import scrapy
 from scrapy.linkextractors import LinkExtractor
 from scrapy.spiders import CrawlSpider, Rule
-from utils.common import get_cookie
+from utils.common import get_cookie, get_md5
+from items import LagouJobItem, LagouJobItemLoader
+from datetime import datetime
 
 
 class LagouSpider(CrawlSpider):
@@ -38,7 +40,9 @@ class LagouSpider(CrawlSpider):
     # 对请求的返回进行处理的配置
     meta = {
         'dont_redirect': True,  # 禁止网页重定向
-        'handle_httpstatus_list': [301, 302]  # 对哪些异常返回进行处理
+        'handle_httpstatus_list': [301, 302],  # 对哪些异常返回进行处理
+        # 'cookiejar':1,
+
     }
 
     def start_requests(self):
@@ -47,12 +51,25 @@ class LagouSpider(CrawlSpider):
 
 
     def parse_job(self, response):
-        print(response.url)
-        i = {}
-        #i['domain_id'] = response.xpath('//input[@id="sid"]/@value').extract()
-        #i['name'] = response.xpath('//div[@id="name"]').extract()
-        #i['description'] = response.xpath('//div[@id="description"]').extract()
-        return i
+        item_loader = LagouJobItemLoader(item=LagouJobItem(), response=response)
+        item_loader.add_css('title','.job-name::attr(title)')
+        item_loader.add_value('url', response.url)
+        item_loader.add_value('url_object_id', get_md5(response.url))
+        item_loader.add_css('salary', '.job_request .salary::text')
+        item_loader.add_xpath('job_city', '//*[@class="job_request"]/p/span[2]/text()')
+        item_loader.add_xpath('work_years', '//*[@class="job_request"]/p/span[3]/text()')
+        item_loader.add_xpath('degree_need', '//*[@class="job_request"]/p/span[4]/text()')
+        item_loader.add_xpath('job_type', '//*[@class="job_request"]/p/span[5]/text()')
+        item_loader.add_css('tags', '.position-label li::text')
+        item_loader.add_css('publish_time', '.publish_time::text')
+        item_loader.add_css('job_advantage', '.job-advantage p::text')
+        item_loader.add_css('job_desc', '.job_bt div') #只提取html，不提取text
+        item_loader.add_css('job_addr', '.work_addr') #同上
+        item_loader.add_css('company_name', '#job_company dt a img::attr(alt)')
+        item_loader.add_css('company_url', '#job_company dt a::attr(href)')
+        item_loader.add_value('crawl_time', datetime.now())
+        job_item = item_loader.load_item()
+        return job_item
 
 
 
