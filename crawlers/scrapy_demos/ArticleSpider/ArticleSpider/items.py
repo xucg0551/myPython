@@ -12,8 +12,11 @@ from scrapy.loader.processors import MapCompose, TakeFirst, Join
 from scrapy.loader import ItemLoader
 from w3lib.html import remove_tags
 from models.es_types import ArticleType
+import redis
 from elasticsearch_dsl.connections import connections
 es = connections.create_connection(ArticleType._doc_type.using)
+
+redis_cli = redis.StrictRedis()
 
 
 class ArticlespiderItem(scrapy.Item):
@@ -109,6 +112,7 @@ class JobBoleArticleItem(scrapy.Item):
         article.meta.id = self['url_object_id']
         article.suggest = gen_suggests(ArticleType._doc_type.index, ((article.title, 10), (article.tags, 7)))
 
+        redis_cli.incr('jobbole_count')
         article.save()
 
 def remove_splash(value):
