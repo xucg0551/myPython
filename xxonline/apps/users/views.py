@@ -1,14 +1,26 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.generic.base import View
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.backends import ModelBackend
 from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
+from django.db.models import Q
 
 from users.forms import LoginForm, RegisterForm
 from users.models import Banner, UserProfile, EmailVerifyRecord
 from operation.models import UserMessage
 from utils.email_send import send_email
 
+class CustomBackend(ModelBackend):
+    def authenticate(self, username=None, password=None, **kwargs):
+        try:
+            user = UserProfile.objects.get(Q(username=username) | Q(email=username))
+            if user.check_password(password):
+                return user
+            else:
+                return None
+        except Exception as e:
+            return None
 
 #首页
 class IndexView(View):

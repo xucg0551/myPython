@@ -30,9 +30,6 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = 'users.UserProfile'
-
-
 # Application definition
 
 INSTALLED_APPS = [
@@ -43,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debug_toolbar.apps.DebugToolbarConfig',
+    # 'pympler',
     'users',
     'operation',
     'xadmin',
@@ -157,8 +155,17 @@ EMAIL_FROM = "xucg0551@sina.com"
 
 INTERNAL_IPS = ("127.0.0.1",)
 DEBUG_TOOLBAR_PATCH_SETTINGS = False
-CONFIG_DEFAULTS = {
-    'JQUERY_URL': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
-}
 
+
+# DEBUG_TOOLBAR_PANELS = (
+#     'debug_toolbar.panels.timer.TimerDebugPanel',  #这里只选择了一个panels，内置的还有很多
+#     'pympler.panels.MemoryPanel',
+#     )
+
+
+AUTH_USER_MODEL = 'users.UserProfile'
+
+AUTHENTICATION_BACKENDS = (
+    'users.views.CustomBackend',
+)
 
