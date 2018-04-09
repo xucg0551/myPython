@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="Encoding">
+    <file url="file://$PROJECT_DIR$/xxonline/extra_apps/xadmin/static/xadmin/vendor/font-awesome/css" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/xxonline/extra_apps/xadmin/static/xadmin/vendor/font-awesome/fonts" charset="GBK" />
     <file url="file://$PROJECT_DIR$/xxonline/static/css" charset="GBK" />
     <file url="file://$PROJECT_DIR$/xxonline/static/images" charset="GBK" />
     <file url="file://$PROJECT_DIR$/xxonline/static/img" charset="GBK" />

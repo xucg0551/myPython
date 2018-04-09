@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'debug_toolbar.apps.DebugToolbarConfig',
     'users',
     'operation',
     'xadmin',
@@ -58,6 +59,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'xxonline.urls'
@@ -152,4 +154,11 @@ EMAIL_HOST_USER = "xucg0551@sina.com"
 EMAIL_HOST_PASSWORD = "admin123"
 EMAIL_USE_TLS= False
 EMAIL_FROM = "xucg0551@sina.com"
+
+INTERNAL_IPS = ("127.0.0.1",)
+DEBUG_TOOLBAR_PATCH_SETTINGS = False
+CONFIG_DEFAULTS = {
+    'JQUERY_URL': '//cdn.bootcss.com/jquery/2.1.4/jquery.min.js',
+}
+
 
