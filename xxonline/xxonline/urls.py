@@ -17,7 +17,7 @@ from django.conf.urls import url, include
 from django.views.static import serve
 
 import xadmin
-from users.views import LoginView, IndexView, LogoutView, RegisterView
+from users.views import LoginView, IndexView, LogoutView, RegisterView, ActivateView
 from xxonline.settings import MEDIA_ROOT
 
 ###首页index.html 进入个人中心、我的消息、退出、注册、授课教师、授课机构、查看更多课程
@@ -28,6 +28,7 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
+    url(r'^activate/(?P<activate_code>.*)/$', ActivateView.as_view(), name='activate'),
 
     #图片处理函数
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),

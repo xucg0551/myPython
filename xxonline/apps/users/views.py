@@ -5,7 +5,9 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 
 from users.forms import LoginForm, RegisterForm
-from users.models import Banner, UserProfile
+from users.models import Banner, UserProfile, EmailVerifyRecord
+from operation.models import UserMessage
+from utils.email_send import send_email
 
 
 #首页
@@ -71,9 +73,31 @@ class RegisterView(View):
             user_profile.password = make_password(password)
             user_profile.save()
 
-            return render(request, 'login.html')
+            user_message = UserMessage()
+            user_message.user = user_profile.id
+            user_message.message = u'欢迎来到东莫村'
+            user_message.save()
 
-
+            #发送邮件
+            send_status = send_email(user_name, 'register')
+            if send_status == 1:
+                return render(request, 'login.html')
+            else:
+                return render(request, "register.html", {"register_form": register_form, "msg": "发送邮件失败"})
         else:
             return render(request, 'register.html', {'register_form': register_form})
+
+
+class ActivateView(View):
+    def get(self, request, activate_code):
+        all_records = EmailVerifyRecord.objects.filter(code=activate_code)
+        if all_records:
+            for record in all_records:
+                email = record.email
+                user_profile = UserProfile.objects.get(email=email)
+                user_profile.is_active = True
+                user_profile.save()
+        else:
+            return render(request, 'activate_fail.html')
+        return render(request, 'login.html')
 

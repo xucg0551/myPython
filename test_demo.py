@@ -1,14 +1,11 @@
 #__author__ = ‘Shane‘
 # -*- coding: utf-8 -*-
 
-# from fake_useragent import UserAgent
-#
-# ua = UserAgent()
-# print(ua.chrome)
+import string
+import random
 
 
-def test():
-    pass
-    print('fsdafaf')
+def id_generator(size=6, chars=string.ascii_letters + string.digits):
+    return ''.join([random.choice(chars) for _ in range(size)])
 
-test()
+print(id_generator())
