@@ -8,5 +8,6 @@
     <file url="file://$PROJECT_DIR$/xxonline/templates/base.html" charset="GBK" />
     <file url="file://$PROJECT_DIR$/xxonline/templates/index.html" charset="GBK" />
     <file url="file://$PROJECT_DIR$/xxonline/templates/login.html" charset="GBK" />
+    <file url="file://$PROJECT_DIR$/xxonline/templates/register.html" charset="GBK" />
   </component>
 </project>

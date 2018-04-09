@@ -1,12 +1,14 @@
 from django.shortcuts import render, HttpResponse, HttpResponseRedirect
 from django.views.generic.base import View
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.urlresolvers import reverse
+from django.contrib.auth.hashers import make_password
 
-from users.forms import LoginForm
-from users.models import Banner
+from users.forms import LoginForm, RegisterForm
+from users.models import Banner, UserProfile
 
 
+#首页
 class IndexView(View):
     def get(self, request):
         #获取轮播图
@@ -16,6 +18,7 @@ class IndexView(View):
         })
 
 
+#登录
 class LoginView(View):
     def get(self, request):
         return render(request, 'login.html', {})
@@ -28,11 +31,49 @@ class LoginView(View):
             password = request.POST.get('password', '')
             user = authenticate(username=user_name, password=password)
             if user:
-                login(request, user)
-                return HttpResponseRedirect(reverse('index'))
-                # return render(request, 'index.html')
+                if user.is_active:
+                    login(request, user)
+                    return HttpResponseRedirect(reverse('index'))
+                    # return render(request, 'index.html')
+                else:
+                    return render(request, 'login.html', {'msg': '用户未激活'})
             else:
                 return render(request, 'login.html', {'msg': '用户名或密码错误'})
 
         else:
             return render(request, 'login.html', {'login_form': login_form})
+
+
+#退出
+class LogoutView(View):
+    def get(self, request):
+        logout(request)
+        return HttpResponseRedirect(reverse('index'))
+
+
+#注册
+class RegisterView(View):
+    def get(self, request):
+        register_form = RegisterForm()
+        return render(request, 'register.html', {'register_form': register_form})
+
+    def post(self, request):
+        register_form = RegisterForm(request.POST)
+        if register_form.is_valid():
+            user_name = request.POST.get('email', '')
+            if UserProfile.objects.filter(email=user_name):
+                return render(request, "register.html", {"register_form": register_form, "msg": "用户已经存在"})
+            password = request.POST.get('password', '')
+            user_profile = UserProfile()
+            user_profile.email = user_name
+            user_profile.username = user_name
+            user_profile.is_active = False
+            user_profile.password = make_password(password)
+            user_profile.save()
+
+            return render(request, 'login.html')
+
+
+        else:
+            return render(request, 'register.html', {'register_form': register_form})
+
