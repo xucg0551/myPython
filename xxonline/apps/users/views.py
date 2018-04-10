@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 
-from users.forms import LoginForm, RegisterForm
+from users.forms import LoginForm, RegisterForm, ForgetForm
 from users.models import Banner, UserProfile, EmailVerifyRecord
 from operation.models import UserMessage
 from utils.email_send import send_email
@@ -116,10 +116,41 @@ class ActivateView(View):
                 user_profile.is_active = True
                 user_profile.save()
                 return render(request, 'login.html')
-        except Exception as e:
+        except EmailVerifyRecord.DoesNotExist:
             return render(request, 'verify_code_fail.html')
 
 
 class ForgetPwdView(View):
     def get(self, request):
-        return render(request, 'forgetpwd.html')
+        forget_form = ForgetForm()
+        return render(request, 'forgetpwd.html', {'forget_form': forget_form})
+
+    def post(self, request):
+        forget_form = ForgetForm(request.POST)
+        if forget_form.is_valid():
+            account = request.POST.get('email', '')
+            send_status = send_email(account, 'forget')
+            if send_status == 1:
+                return render(request, 'send_success.html')
+        else:
+            return render(request, 'forgetpwd.html', {'forget_form': forget_form})
+
+
+class ResetPwdView(View):
+    def get(self, request, reset_code, email):
+        try:
+            email_verify_record = EmailVerifyRecord.objects.get(code=reset_code, email=email, is_verified=False)
+            if email_verify_record:
+                email_verify_record.is_verified = True
+                email_verify_record.save()
+                return render(request, 'password_reset.html', {'email': email})
+        except EmailVerifyRecord.DoesNotExist:
+            return render(request, 'verify_code_fail.html')
+
+
+class ModifyPwdView(View):
+    def post(self, request):
+        return HttpResponse('modify passowrd', content_type='text/plain')
+
+
+

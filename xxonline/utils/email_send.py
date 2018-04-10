@@ -11,15 +11,26 @@ def random_code(size, chars=string.ascii_letters+string.digits):
 
 
 def send_email(email, send_type="register"):
-    email_record = EmailVerifyRecord()
+
     if send_type == "update_email":
         code = random_code(4)
     else:
         code = random_code(16)
-    email_record.code = code
-    email_record.email = email
-    email_record.send_type = send_type
-    email_record.save()
+
+    EmailVerifyRecord.objects.update_or_create(email=email, send_type=send_type,
+                                               defaults={'code': code, 'is_verified': False})
+    ##以下方法等同于上面的update_or_create
+    # try:
+    #     record = EmailVerifyRecord.objects.get(email=email, send_type=send_type)
+    #     if record:
+    #         record.code = code
+    #         record.is_verified = False
+    #         record.save()
+    # except EmailVerifyRecord.DoDoesNotExist:
+    #     EmailVerifyRecord.objects.create(email=email, code=code, send_type=send_type)
+
+
+
 
     if send_type == "register":
         email_title = "cgonline 激活用户"
