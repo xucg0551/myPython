@@ -4,7 +4,7 @@ from django.views.generic import TemplateView
 from django.conf import settings
 
 import xadmin
-from users.views import LoginView, IndexView, LogoutView, RegisterView, ActivateView
+from users.views import LoginView, IndexView, LogoutView, RegisterView, ActivateView, ForgetPwdView
 from xxonline.settings import MEDIA_ROOT
 
 urlpatterns = [
@@ -14,7 +14,8 @@ urlpatterns = [
     url(r'^login/$', LoginView.as_view(), name='login'),
     url(r'^logout/$', LogoutView.as_view(), name='logout'),
     url(r'^register/$', RegisterView.as_view(), name='register'),
-    url(r'^activate/(?P<activate_code>.*)/$', ActivateView.as_view(), name='activate'),
+    url(r'^activate/(?P<activate_code>.*)/(?P<email>.*)/$', ActivateView.as_view(), name='activate'),
+    url(r'^forget/$', ForgetPwdView.as_view(), name="forget_pwd"),
 
     #图片处理函数
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),

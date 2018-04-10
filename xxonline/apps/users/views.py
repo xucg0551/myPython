@@ -75,8 +75,10 @@ class RegisterView(View):
         register_form = RegisterForm(request.POST)
         if register_form.is_valid():
             user_name = request.POST.get('email', '')
+            #判断邮箱是否注册过
             if UserProfile.objects.filter(email=user_name):
                 return render(request, "register.html", {"register_form": register_form, "msg": "用户已经存在"})
+
             password = request.POST.get('password', '')
             user_profile = UserProfile()
             user_profile.email = user_name
@@ -90,7 +92,7 @@ class RegisterView(View):
             user_message.message = u'欢迎来到东莫村'
             user_message.save()
 
-            #发送邮件
+            #发送邮件用以激活
             send_status = send_email(user_name, 'register')
             if send_status == 1:
                 return render(request, 'login.html')
@@ -100,16 +102,24 @@ class RegisterView(View):
             return render(request, 'register.html', {'register_form': register_form})
 
 
+#激活用户
 class ActivateView(View):
-    def get(self, request, activate_code):
-        all_records = EmailVerifyRecord.objects.filter(code=activate_code)
-        if all_records:
-            for record in all_records:
-                email = record.email
+    def get(self, request, activate_code, email):
+        # ev_record = EmailVerifyRecord.objects.filter(code=activate_code, email=email, is_verified=False)
+        try:
+            email_verify_record = EmailVerifyRecord.objects.get(code=activate_code, email=email, is_verified=False)
+            if email_verify_record:
+                email_verify_record.is_verified = True
+                email_verify_record.save()
+
                 user_profile = UserProfile.objects.get(email=email)
                 user_profile.is_active = True
                 user_profile.save()
-        else:
-            return render(request, 'activate_fail.html')
-        return render(request, 'login.html')
+                return render(request, 'login.html')
+        except Exception as e:
+            return render(request, 'verify_code_fail.html')
 
+
+class ForgetPwdView(View):
+    def get(self, request):
+        return render(request, 'forgetpwd.html')
