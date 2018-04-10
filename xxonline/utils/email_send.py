@@ -11,12 +11,7 @@ def random_code(size, chars=string.ascii_letters+string.digits):
 
 
 def send_email(email, send_type="register"):
-
-    if send_type == "update_email":
-        code = random_code(4)
-    else:
-        code = random_code(16)
-
+    code = random_code(16)
     EmailVerifyRecord.objects.update_or_create(email=email, send_type=send_type,
                                                defaults={'code': code, 'is_verified': False})
     ##以下方法等同于上面的update_or_create

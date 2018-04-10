@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.hashers import make_password
 from django.db.models import Q
 
-from users.forms import LoginForm, RegisterForm, ForgetForm
+from users.forms import LoginForm, RegisterForm, ForgetForm, ModifyPwdForm
 from users.models import Banner, UserProfile, EmailVerifyRecord
 from operation.models import UserMessage
 from utils.email_send import send_email
@@ -150,7 +150,20 @@ class ResetPwdView(View):
 
 class ModifyPwdView(View):
     def post(self, request):
-        return HttpResponse('modify passowrd', content_type='text/plain')
+        modify_pwd_form = ModifyPwdForm(request.POST)
+        if modify_pwd_form.is_valid():
+            pwd1 = request.POST.get("password1", "")
+            pwd2 = request.POST.get("password2", "")
+            email = request.POST.get("email", "")
+            if pwd1 != pwd2:
+                return render(request, "password_reset.html", {"email": email, "msg": "密码不一致"})
+            user = UserProfile.objects.get(email=email)
+            user.password = make_password(pwd2)
+            user.save()
+            return render(request, "login.html")
+        else:
+            email = request.POST.get("email", "")
+            return render(request, "password_reset.html", {"email": email, "modify_form": modify_pwd_form})
 
 
 

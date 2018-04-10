@@ -31,7 +31,7 @@ class Banner(models.Model):
     image = models.ImageField(verbose_name=u"轮播图", upload_to="banner/%Y/%m", max_length=100)
     url = models.URLField(verbose_name=u"访问地址", max_length=200)
     index = models.IntegerField(verbose_name=u"顺序", default=100)
-    add_time = models.DateTimeField(verbose_name=u"添加时间", default=datetime.now)
+    add_time = models.DateTimeField(verbose_name=u"添加时间", auto_now=True)
 
     class Meta:
         verbose_name = u"轮播图"
