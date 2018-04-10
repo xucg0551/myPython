@@ -6,6 +6,7 @@ from django.conf import settings
 import xadmin
 from users.views import LoginView, IndexView, LogoutView, RegisterView, ActivateView, ForgetPwdView, ResetPwdView, ModifyPwdView
 from xxonline.settings import MEDIA_ROOT
+from organization.views import OrgView
 
 urlpatterns = [
     url(r'xadmin/', xadmin.site.urls),
@@ -19,11 +20,18 @@ urlpatterns = [
     url(r'^reset/(?P<reset_code>.*)/(?P<email>.*)/$', ResetPwdView.as_view(), name='reset'),
     url(r'^modify_pwd/$', ModifyPwdView.as_view(), name='modify_pwd'),
 
+    #课程机构url配置
+    url(r'^org/', include('organization.urls', namespace="org")),
+
+
+
     #图片处理函数
     url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
 
     #验证码处理函数
     url(r'^captcha/', include('captcha.urls')),
+
+
 ]
 
 if settings.DEBUG:

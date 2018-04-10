@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'debug_toolbar.apps.DebugToolbarConfig',
     # 'pympler',
     'users',
+    'organization',
     'operation',
     'xadmin',
     'crispy_forms',
