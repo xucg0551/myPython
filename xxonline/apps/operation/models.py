@@ -12,3 +12,13 @@ class UserMessage(models.Model):
     class Meta:
         verbose_name = u"用户消息"
         verbose_name_plural = verbose_name
+
+class UserAsk(models.Model):
+    name = models.CharField(max_length=20, verbose_name=u"姓名")
+    mobile = models.CharField(max_length=11, verbose_name=u"手机")
+    course_name = models.CharField(max_length=50, verbose_name=u"课程名")
+    add_time = models.DateTimeField(auto_now=True, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"用户咨询"
+        verbose_name_plural = verbose_name

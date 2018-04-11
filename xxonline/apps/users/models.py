@@ -32,6 +32,8 @@ class Banner(models.Model):
     url = models.URLField(verbose_name=u"访问地址", max_length=200)
     index = models.IntegerField(verbose_name=u"顺序", default=100)
     add_time = models.DateTimeField(verbose_name=u"添加时间", auto_now=True)
+    category = models.CharField(verbose_name=u'类别', choices=(('ty', '体育'),('yl', '娱乐'),('jr', '金融'),('qc', '汽车')),
+                                default='qc', max_length=10)
 
     class Meta:
         verbose_name = u"轮播图"

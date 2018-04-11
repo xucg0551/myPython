@@ -5,7 +5,7 @@ from django.conf import settings
 
 import xadmin
 from users.views import LoginView, IndexView, LogoutView, RegisterView, ActivateView, ForgetPwdView, ResetPwdView, ModifyPwdView
-from xxonline.settings import MEDIA_ROOT
+# from xxonline.settings import MEDIA_ROOT
 from organization.views import OrgView
 
 urlpatterns = [
@@ -23,10 +23,8 @@ urlpatterns = [
     #课程机构url配置
     url(r'^org/', include('organization.urls', namespace="org")),
 
-
-
     #图片处理函数
-    url(r'^media/(?P<path>.*)$', serve, {'document_root': MEDIA_ROOT}),
+    url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     #验证码处理函数
     url(r'^captcha/', include('captcha.urls')),
