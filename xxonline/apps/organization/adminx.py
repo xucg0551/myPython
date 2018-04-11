@@ -1,4 +1,4 @@
-from .models import CityDict, CourseOrg
+from .models import CityDict, CourseOrg, Teacher
 import xadmin
 
 class CityDictAdmin(object):
@@ -17,5 +17,13 @@ class CourseOrgAdmin(object):
     model_icon = 'fa fa-university'
 
 
+class TeacherAdmin(object):
+    list_display = ['org', 'name', 'work_years', 'work_company']
+    search_fields = ['org', 'name', 'work_years', 'work_company']
+    list_filter = ['org', 'name', 'work_years', 'work_company']
+    model_icon = 'fa fa-user-md'
+
+
 xadmin.site.register(CityDict, CityDictAdmin)
 xadmin.site.register(CourseOrg, CourseOrgAdmin)
+xadmin.site.register(Teacher, TeacherAdmin)

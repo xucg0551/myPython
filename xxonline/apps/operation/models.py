@@ -2,6 +2,8 @@ from django.db import models
 
 from datetime import datetime
 
+from users.models import UserProfile
+
 
 class UserMessage(models.Model):
     user = models.IntegerField(verbose_name=u"接收用户", default=0)
@@ -22,3 +24,12 @@ class UserAsk(models.Model):
     class Meta:
         verbose_name = u"用户咨询"
         verbose_name_plural = verbose_name
+
+# class UserCourse(models.Model):
+#     user = models.ForeignKey(UserProfile, verbose_name=u"用户")
+#     course = models.ForeignKey(Course, verbose_name=u"课程")
+#     add_time = models.DateTimeField(default=datetime.now, verbose_name=u"添加时间")
+#
+#     class Meta:
+#         verbose_name = u"用户课程"
+#         verbose_name_plural = verbose_name
