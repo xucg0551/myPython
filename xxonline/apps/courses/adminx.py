@@ -1,4 +1,4 @@
-from courses.models import Course
+from courses.models import Course, Lesson, Video
 import xadmin
 
 class CourseAdmin(object):
@@ -33,4 +33,19 @@ class CourseAdmin(object):
     #     return super(CourseAdmin, self).post(request, args, kwargs)
 
 
+class LessonAdmin(object):
+    list_display = ['course', 'name', 'add_time']
+    search_fields = ['course', 'name']
+    list_filter = ['course__name', 'name', 'add_time']
+
+
+class VideoAdmin(object):
+    list_display = ['lesson', 'name', 'add_time']
+    search_fields = ['lesson', 'name']
+    list_filter = ['lesson', 'name', 'add_time']
+    model_icon = 'fa fa-film'
+
+
 xadmin.site.register(Course, CourseAdmin)
+xadmin.site.register(Lesson, LessonAdmin)
+xadmin.site.register(Video, VideoAdmin)
