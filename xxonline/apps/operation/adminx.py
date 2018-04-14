@@ -1,5 +1,5 @@
 import xadmin
-from .models import UserMessage, UserAsk, UserFavorite, UserCourse
+from .models import UserMessage, UserAsk, UserFavorite, UserCourse, CourseComments
 
 
 class UserMessageAdmin(object):
@@ -27,8 +27,16 @@ class UserCourseAdmin(object):
     list_filter = ['user', 'course', 'add_time']
     model_icon = 'fa fa-address-book'
 
+class CourseCommentsAdmin(object):
+    list_display = ['user', 'course', 'comments', 'add_time']
+    search_fields = ['user', 'course', 'comments']
+    list_filter = ['user', 'course', 'comments', 'add_time']
+    model_icon = 'fa fa-comment'
+
 
 xadmin.site.register(UserMessage, UserMessageAdmin)
 xadmin.site.register(UserAsk, UserAskAdmin)
 xadmin.site.register(UserFavorite, UserFavoriteAdmin)
 xadmin.site.register(UserCourse, UserCourseAdmin)
+xadmin.site.register(CourseComments, CourseCommentsAdmin)
+

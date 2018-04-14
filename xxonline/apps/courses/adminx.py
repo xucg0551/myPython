@@ -1,13 +1,13 @@
-from courses.models import Course, Lesson, Video
+from courses.models import Course, Lesson, Video, CourseResource
 import xadmin
 
 class CourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+    list_display = ['name', 'desc', 'detail', 'degree', 'tag', 'students']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
-    list_filter = ['name', 'desc', 'detail', 'degree', 'learn_times', 'students']
+    list_filter = ['name', 'desc', 'detail', 'degree', 'tag', 'students']
     ordering = ['-click_nums']
     readonly_fields = ['click_nums']
-    list_editable = ['degree', 'desc']
+    list_editable = ['degree', 'desc', 'tag']
     exclude = ['fav_nums']
     # inlines = [LessonInline, CourseResourceInline]
     # style_fields = {"detail":"ueditor"}
@@ -45,7 +45,13 @@ class VideoAdmin(object):
     list_filter = ['lesson', 'name', 'add_time']
     model_icon = 'fa fa-film'
 
+class CourseResourceAdmin(object):
+    list_display = ['course', 'name', 'download', 'add_time']
+    search_fields = ['course', 'name', 'download']
+    list_filter = ['course', 'name', 'download', 'add_time']
+
 
 xadmin.site.register(Course, CourseAdmin)
 xadmin.site.register(Lesson, LessonAdmin)
 xadmin.site.register(Video, VideoAdmin)
+xadmin.site.register(CourseResource, CourseResourceAdmin)

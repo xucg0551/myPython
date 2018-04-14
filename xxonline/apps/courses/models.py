@@ -44,9 +44,9 @@ class Course(models.Model):
     def get_learn_users(self):
         return self.usercourse_set.all()[:5]
     #
-    # def get_course_lesson(self):
-    #     #获取课程所有章节
-    #     return self.lesson_set.all()
+    def get_course_lesson(self):
+        #获取课程所有章节
+        return self.lesson_set.all()
 
     def __str__(self):
         return self.name
@@ -78,6 +78,19 @@ class Video(models.Model):
 
     class Meta:
         verbose_name = u"视频"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+class CourseResource(models.Model):
+    course = models.ForeignKey(Course, verbose_name=u"课程")
+    name = models.CharField(max_length=100, verbose_name=u"名称")
+    download = models.FileField(upload_to="course/resource/%Y/%m", verbose_name=u"资源文件", max_length=100)
+    add_time = models.DateTimeField(auto_now=True, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"课程资源"
         verbose_name_plural = verbose_name
 
     def __str__(self):

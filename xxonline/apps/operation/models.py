@@ -36,6 +36,9 @@ class UserCourse(models.Model):
         verbose_name = u"用户课程"
         verbose_name_plural = verbose_name
 
+    def __str__(self):
+        return '{}:{}'.format(self.user, self.course)
+
 class UserFavorite(models.Model):
     user = models.ForeignKey(UserProfile, verbose_name=u"用户")
     fav_id = models.IntegerField(default=0, verbose_name=u"数据id")
@@ -45,3 +48,17 @@ class UserFavorite(models.Model):
     class Meta:
         verbose_name = u"用户收藏"
         verbose_name_plural = verbose_name
+
+class CourseComments(models.Model):
+    "课程评论"
+    user = models.ForeignKey(UserProfile, verbose_name=u"用户")
+    course = models.ForeignKey(Course, verbose_name=u"课程")
+    comments = models.CharField(max_length=200, verbose_name=u"评论")
+    add_time = models.DateTimeField(auto_now=True, verbose_name=u"添加时间")
+
+    class Meta:
+        verbose_name = u"课程评论"
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.comments
