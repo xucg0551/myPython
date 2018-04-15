@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from django.views.generic import View
+from django.db.models import Q
 
 from pure_pagination import PageNotAnInteger, Paginator
 from .models import CityDict, CourseOrg, Teacher
@@ -15,6 +16,11 @@ class OrgView(View):
         all_orgs = CourseOrg.objects.all()
         hot_orgs = all_orgs.order_by('-click_nums')[:3]
         org_nums = all_orgs.count()
+
+        # 机构搜索
+        search_keywords = request.GET.get('keywords', "")
+        if search_keywords:
+            all_orgs = all_orgs.filter(Q(name__icontains=search_keywords) | Q(desc__icontains=search_keywords))
 
         city_id = request.GET.get('city', '')
         if city_id:
@@ -132,6 +138,7 @@ class OrgTeacherView(View):
             if UserFavorite.objects.filter(user=request.user, fav_id=course_org.id, fav_type=2):
                 has_fav = True
         all_teachers = course_org.teacher_set.all()
+
         return render(request, 'org-detail-teachers.html', {
             'all_teachers':all_teachers,
             'course_org':course_org,
@@ -208,13 +215,13 @@ class TeacherListView(View):
     def get(self, request):
         all_teachers = Teacher.objects.all()
         #
-        # #课程讲师搜索
-        # search_keywords = request.GET.get('keywords', "")
-        # if search_keywords:
-        #     all_teachers = all_teachers.filter(Q(name__icontains=search_keywords)|
-        #                                        Q(work_company__icontains=search_keywords)|
-        #                                        Q(work_position__icontains=search_keywords))
-        #
+        #课程讲师搜索
+        search_keywords = request.GET.get('keywords', "")
+        if search_keywords:
+            all_teachers = all_teachers.filter(Q(name__icontains=search_keywords)|
+                                               Q(work_company__icontains=search_keywords)|
+                                               Q(work_position__icontains=search_keywords))
+
         sort = request.GET.get('sort', "")
         if sort:
             if sort == "hot":

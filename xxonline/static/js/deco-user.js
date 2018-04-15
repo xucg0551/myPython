@@ -157,7 +157,7 @@ $(function(){
            return;
         }
         $.ajax({
-            cache: false,
+            cache: false,cD
             type: 'post',
             dataType:'json',
             url:"/users/info/",

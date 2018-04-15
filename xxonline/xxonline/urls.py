@@ -25,12 +25,16 @@ urlpatterns = [
 
     #课程相关url配置
     url(r'^course/', include('courses.urls', namespace="course")),
-    
+
+    #课程相关url配置
+    url(r'^users/', include('users.urls', namespace="users")),
     #图片处理函数
     url(r'^media/(?P<path>.*)$', serve, {'document_root': settings.MEDIA_ROOT}),
 
     #验证码处理函数
     url(r'^captcha/', include('captcha.urls')),
+
+
 
 
 ]

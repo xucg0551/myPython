@@ -38,7 +38,7 @@ def send_email(email, send_type="register"):
 
         send_status = send_mail(email_title, email_body, settings.EMAIL_FROM, [email])
     elif send_type == "update_email":
-        email_title = "慕学在线邮箱修改验证码"
+        email_title = "cgonline 邮箱修改验证码"
         email_body = "你的邮箱验证码为: {0}".format(code)
 
         send_status = send_mail(email_title, email_body, settings.EMAIL_FROM, [email])
