@@ -35,6 +35,11 @@ urlpatterns = [
     #验证码处理函数
     url(r'^captcha/', include('captcha.urls')),
 
+    # url(r'^static/(?P<path>.*)$',  serve, {"document_root":settings.STATIC_ROOT}),
+
+    #富文本相关url
+    url(r'^ueditor/',include('DjangoUeditor.urls' )),
+
 
 
 
@@ -43,4 +48,8 @@ urlpatterns = [
 if settings.DEBUG:
     import debug_toolbar
     urlpatterns.append(url(r'^__debug__/', include(debug_toolbar.urls)))
+
+#全局404页面配置
+handler404 = 'users.views.page_not_found'
+handler500 = 'users.views.page_error'
 

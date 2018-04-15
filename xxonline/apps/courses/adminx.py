@@ -1,31 +1,54 @@
-from courses.models import Course, Lesson, Video, CourseResource
+from courses.models import Course, Lesson, Video, CourseResource, BannerCourse
 import xadmin
+class LessonInline(object):
+    model = Lesson
+    extra = 0
+
+class CourseResourceInline(object):
+    model = CourseResource
+    extra = 0
+
+class BannerCourseAdmin(object):
+    list_display = ['name', 'desc', 'detail', 'degree', 'tag', 'students', 'get_zj_nums', 'go_to']
+    search_fields = ['name', 'desc', 'detail', 'degree', 'students']
+    list_filter = ['name', 'desc', 'detail', 'degree', 'tag', 'students']
+    ordering = ['-click_nums']
+    readonly_fields = ['click_nums']
+    exclude = ['fav_nums']
+    inlines = [LessonInline, CourseResourceInline]
+    style_fields = {"detail": "ueditor"}
+
+    def queryset(self):
+        qs = super(BannerCourseAdmin, self).queryset()
+        qs = qs.filter(is_banner=True)
+        return qs
 
 class CourseAdmin(object):
-    list_display = ['name', 'desc', 'detail', 'degree', 'tag', 'students']
+    list_display = ['name', 'desc', 'detail', 'degree', 'tag', 'students', 'get_zj_nums']
     search_fields = ['name', 'desc', 'detail', 'degree', 'students']
     list_filter = ['name', 'desc', 'detail', 'degree', 'tag', 'students']
     ordering = ['-click_nums']
     readonly_fields = ['click_nums']
     list_editable = ['degree', 'desc', 'tag']
     exclude = ['fav_nums']
-    # inlines = [LessonInline, CourseResourceInline]
-    # style_fields = {"detail":"ueditor"}
+    inlines = [LessonInline, CourseResourceInline]
+    # refresh_times = [3, 5]
+    style_fields = {"detail":"ueditor"}
     # import_excel = True
 
-    # def queryset(self):
-    #     qs = super(CourseAdmin, self).queryset()
-    #     qs = qs.filter(is_banner=False)
-    #     return qs
+    def queryset(self):
+        qs = super(CourseAdmin, self).queryset()
+        qs = qs.filter(is_banner=False)
+        return qs
     #
-    # def save_models(self):
-    #     #在保存课程的时候统计课程机构的课程数
-    #     obj = self.new_obj
-    #     obj.save()
-    #     if obj.course_org is not None:
-    #         course_org = obj.course_org
-    #         course_org.course_nums = Course.objects.filter(course_org=course_org).count()
-    #         course_org.save()
+    def save_models(self):
+        #在保存课程的时候统计课程机构的课程数
+        obj = self.new_obj
+        obj.save()
+        if obj.course_org is not None:
+            course_org = obj.course_org
+            course_org.course_nums = Course.objects.filter(course_org=course_org).count()
+            course_org.save()
     #
     # def post(self, request, *args, **kwargs):
     #     if 'excel' in request.FILES:
@@ -51,7 +74,10 @@ class CourseResourceAdmin(object):
     list_filter = ['course', 'name', 'download', 'add_time']
 
 
+
+
 xadmin.site.register(Course, CourseAdmin)
+xadmin.site.register(BannerCourse, BannerCourseAdmin)
 xadmin.site.register(Lesson, LessonAdmin)
 xadmin.site.register(Video, VideoAdmin)
 xadmin.site.register(CourseResource, CourseResourceAdmin)

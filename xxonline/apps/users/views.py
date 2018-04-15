@@ -31,8 +31,14 @@ class IndexView(View):
     def get(self, request):
         #获取轮播图
         all_banners = Banner.objects.all()
+        courses = Course.objects.filter(is_banner=False)[:6]
+        banner_courses = Course.objects.filter(is_banner=True)[:3]
+        course_orgs = CourseOrg.objects.all()[:15]
         return render(request, 'index.html', {
-            'all_banners': all_banners
+            'all_banners': all_banners,
+            'courses': courses,
+            'banner_courses': banner_courses,
+            'course_orgs': course_orgs
         })
 
 
@@ -331,5 +337,19 @@ class MymessageView(LoginRequiredMixin, View):
             'current_page':'my_message'
         })
 
+
+def page_not_found(request):
+    #全局404处理函数
+    from django.shortcuts import render_to_response
+    response = render_to_response('404.html', {})
+    response.status_code = 404
+    return response
+
+def page_error(request):
+    #全局500处理函数
+    from django.shortcuts import render_to_response
+    response = render_to_response('500.html', {})
+    response.status_code = 500
+    return response
 
 
