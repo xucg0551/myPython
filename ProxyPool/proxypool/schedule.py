@@ -57,6 +57,8 @@ class ValidityTester(object):
             loop = asyncio.get_event_loop()
             #多个协程封装组一组tasks运行
             tasks = [self.test_single_proxy(proxy) for proxy in self._raw_proxies]
+            if len(tasks) >= 200:
+                tasks = tasks[0:200]
             loop.run_until_complete(asyncio.wait(tasks))
         except Exception as e:
             print(e)

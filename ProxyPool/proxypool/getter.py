@@ -30,15 +30,15 @@ class FreeProxyGetter(object, metaclass=ProxyMetaclass):
             proxies.append(proxy)
         return proxies
 
-    def crawl_ip181(self):
-        start_url = 'http://www.ip181.com/'
-        html = get_page(start_url)
-        ip_adress = re.compile('<tr.*?>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
-        # \s* 匹配空格，起到换行作用
-        re_ip_adress = ip_adress.findall(html)
-        for adress,port in re_ip_adress:
-            result = adress + ':' + port
-            yield result.replace(' ', '')
+    # def crawl_ip181(self):
+    #     start_url = 'http://www.ip181.com/'
+    #     html = get_page(start_url)
+    #     ip_adress = re.compile('<tr.*?>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
+    #     # \s* 匹配空格，起到换行作用
+    #     re_ip_adress = ip_adress.findall(html)
+    #     for adress,port in re_ip_adress:
+    #         result = adress + ':' + port
+    #         yield result.replace(' ', '')
 
 
     def crawl_xicidaili(self):
@@ -55,16 +55,16 @@ class FreeProxyGetter(object, metaclass=ProxyMetaclass):
                     result = adress+':'+ port
                     yield result.replace(' ', '')
 
-    def crawl_ip3366(self):
-        for page in range(1, 10):
-            start_url = 'http://www.ip3366.net/free/?stype=1&page={}'.format(page)
-            html = get_page(start_url)
-            ip_adress = re.compile('<tr>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
-            # \s * 匹配空格，起到换行作用
-            re_ip_adress = ip_adress.findall(html)
-            for adress, port in re_ip_adress:
-                result = adress+':'+ port
-                yield result.replace(' ', '')
+    # def crawl_ip3366(self):
+    #     for page in range(1, 10):
+    #         start_url = 'http://www.ip3366.net/free/?stype=1&page={}'.format(page)
+    #         html = get_page(start_url)
+    #         ip_adress = re.compile('<tr>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
+    #         # \s * 匹配空格，起到换行作用
+    #         re_ip_adress = ip_adress.findall(html)
+    #         for adress, port in re_ip_adress:
+    #             result = adress+':'+ port
+    #             yield result.replace(' ', '')
 
 
     def crawl_daili66(self, page_count=4):
@@ -116,16 +116,16 @@ class FreeProxyGetter(object, metaclass=ProxyMetaclass):
                 result = adress+':'+port
                 yield result.replace(' ','')
 
-    def crawl_kxdaili(self):
-        for i in range(1, 10):
-            start_url = 'http://www.kxdaili.com/ipList/{}.html#ip'.format(i)
-            html = get_page(start_url)
-            ip_adress = re.compile('<tr.*?>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
-            # \s* 匹配空格，起到换行作用
-            re_ip_adress = ip_adress.findall(html)
-            for adress, port in re_ip_adress:
-                result = adress + ':' + port
-                yield result.replace(' ', '')
+    # def crawl_kxdaili(self):
+    #     for i in range(1, 10):
+    #         start_url = 'http://www.kxdaili.com/ipList/{}.html#ip'.format(i)
+    #         html = get_page(start_url)
+    #         ip_adress = re.compile('<tr.*?>\s*<td>(.*?)</td>\s*<td>(.*?)</td>')
+    #         # \s* 匹配空格，起到换行作用
+    #         re_ip_adress = ip_adress.findall(html)
+    #         for adress, port in re_ip_adress:
+    #             result = adress + ':' + port
+    #             yield result.replace(' ', '')
 
 
     # def crawl_premproxy(self):

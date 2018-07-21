@@ -6,7 +6,7 @@ HOST = 'localhost'
 PORT = 6379
 
 # 如果Redis有密码，则添加这句密码，否则设置为None或''
-PASSWORD = ''
+PASSWORD = 'ajmd123'
 
 # 获得代理测试时间界限
 PROXY_TIMEOUT = 9
